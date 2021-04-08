@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/08 19:14:27 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/08 20:12:44 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,18 +29,50 @@ echo " \033[2J\033[H\033[1;36m\
          |_____|
 \033[0m"
 
+## SOME CONFIG FOR LINUX
+
 if [ $(uname) = "Linux" ] ; then
 	echo "\033[0;31mIf you are in the VM, please check if you are running with 2 cores\033[0m"
 	echo /etc/group | grep "docker" | grep $(whoami) | 2>/dev/null 1>&2
-	if [ $? = 0 ] ; then
+	# $var -eq 0 : $var == 0 -> true
+	# $var -ne 0 : $var != 0 -> true
+	if [ $? -ne 0 ] ; then
 		# run docker without sudo
 		echo "\033[0;31mPlease do\033[0m \033[0;33m\"sudo usermod -aG docker $(whoami);\"\033[0m and \033[0;31mrerun\033[0m the script"
 	fi
 	exit
 fi
 
+## MINIKUBE
+
 if [ $(uname) = "Linux" ] ; then
-	echo "ok\n"
+	echo "linux\n"
 else
-	echo "ko\n"
+	echo "darwin\n"
 fi
+
+## METALLB
+
+install_metallb ()
+{
+	## Preparation
+
+	# see what changes would be made, returns nonzero returncode if different
+	kubectl get configmap kube-proxy -n kube-system -o yaml | \
+	sed -e "s/strictARP: false/strictARP: true/" | \
+	kubectl diff -f - -n kube-system
+
+	# actually apply the changes, returns nonzero returncode on errors only
+	kubectl get configmap kube-proxy -n kube-system -o yaml | \
+	sed -e "s/strictARP: false/strictARP: true/" | \
+	kubectl apply -f - -n kube-system
+
+	## Installation By Manifest
+
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
+	# On first install only
+	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+
+	kubectl apply -f srcs/metallb-configmap.yaml
+}
