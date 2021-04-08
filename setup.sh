@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/08 20:12:44 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/08 20:14:48 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,5 +74,5 @@ install_metallb ()
 	# On first install only
 	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
-	kubectl apply -f srcs/metallb-configmap.yaml
+	kubectl apply -f srcs/yaml/metallb-configmap.yaml
 }
