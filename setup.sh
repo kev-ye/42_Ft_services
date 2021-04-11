@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/11 21:47:50 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/11 21:49:26 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,6 +54,9 @@ if [ $(uname) = "Linux" ] ; then
 	minikube start --vm-driver=docker
 else
 	echo "\033[1;36mOs : Macos\n\033[0m"
+
+	#### add installation of brew for campus
+	
 	# installing kubectl
 	if ! kubectl version --client 2>/dev/null 1>&2 ; then
 		echo "\033[1;32mkubectl installing\033[0m"
