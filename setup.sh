@@ -38,22 +38,27 @@ if [ $(uname) = "Linux" ] ; then
 	# $var -ne 0 : $var != 0 -> true
 	if [ $? -ne 0 ] ; then
 		# run docker without sudo
-		echo "\033[0;31mPlease do\033[0m \033[0;33m\"sudo usermod -aG docker $(whoami);\"\033[0m and \033[0;31mrerun\033[0m the script"
-		exit;
+		echo "\033[0;31mPlease do\033[0m \033[0;33m\"sudo usermod -aG docker $(whoami); newgrp docker\"\033[0m and \033[0;31mrerun\033[0m the script"
+		exit
 	fi
 fi
 
 ## MINIKUBE
 
 if [ $(uname) = "Linux" ] ; then
-	echo "linux"
+	echo "\033[0;36mOS : Linux\n\033[0m"
+	# make sure docker is running
+	service docker restart
+	# run minikube
+	minikube start --vm-driver=docker
+	CLUSTER_IP="$(kubectl get node -o=custom-columns='DATA:status.addresses[0].address' | sed -n 2p)"
 else
-	echo "darwin"
+	echo "\033[0;36mOs : Macos\n\033[0m"
 fi
 
 ## METALLB
 
-install_metallb ()
+function install_metallb()
 {
 	## Preparation
 
@@ -74,5 +79,11 @@ install_metallb ()
 	# On first install only
 	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
-	kubectl apply -f srcs/yaml/metallb-configmap.yaml
+	#kubectl apply -f srcs/yaml/metallb-configmap.yaml
 }
+
+kubectl get pods -n metallb-system 2>/dev/null | grep "controller" | grep "Running" 2>/dev/null 1>&2
+if [ $? -ne 0 ] ; then
+	echo "\033[0;33mInstalling & configuring metallb ...\033[0m"
+	install_metallb >/dev/null
+fi
