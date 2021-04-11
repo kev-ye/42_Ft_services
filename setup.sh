@@ -32,23 +32,23 @@ echo " \033[2J\033[H\033[1;36m\
 ## SOME CONFIG FOR LINUX
 
 if [ $(uname) = "Linux" ] ; then
-	echo "\033[0;31mIf you are in the VM, please check if you are running with 2 cores\033[0m"
-	echo /etc/group | grep "docker" | grep $(whoami) | 2>/dev/null 1>&2
+	echo "\033[0;31m\n(If you are in the VM, please check if you are running with 2 cores)\n\033[0m"
+	cat /etc/group | grep "docker" | grep $(whoami) 2>/dev/null 1>&2
 	# $var -eq 0 : $var == 0 -> true
 	# $var -ne 0 : $var != 0 -> true
 	if [ $? -ne 0 ] ; then
 		# run docker without sudo
 		echo "\033[0;31mPlease do\033[0m \033[0;33m\"sudo usermod -aG docker $(whoami);\"\033[0m and \033[0;31mrerun\033[0m the script"
+		exit;
 	fi
-	exit
 fi
 
 ## MINIKUBE
 
 if [ $(uname) = "Linux" ] ; then
-	echo "linux\n"
+	echo "linux"
 else
-	echo "darwin\n"
+	echo "darwin"
 fi
 
 ## METALLB
