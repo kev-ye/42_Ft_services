@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/12 22:50:45 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/12 22:56:00 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,6 +50,10 @@ function minikube_linux()
 
 	# make sure docker is running
 	service docker restart
+
+	# clean old minikube
+	echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
+	minikube delete
 }
 
 function minikube_macos()
@@ -98,8 +102,12 @@ function minikube_macos()
 			fi
 		fi
 	else
+
+		# run docker
 		echo ""$GREEN"\n🐳 docker running ..."$NONE""
 		open -a docker
+	
+		# clean old minikube
 		echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
 		minikube delete
 	fi
@@ -130,8 +138,8 @@ if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
 	echo ""$GREEN"Enabling dashboard ..."$NONE""
 	minikube addons enable dashboard
 
-	# tips
-	echo ""$YELLOW"\n✅ Lauch the command \"minikube delete\" to clean minikube when finished ✅\n"$NONE""
+	# installation done
+	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
