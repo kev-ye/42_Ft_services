@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/11 21:49:26 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/12 13:21:49 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,38 +38,57 @@ if [ $(uname) = "Linux" ] ; then
 	# $var -ne 0 : $var != 0 -> true
 	if [ $? -ne 0 ] ; then
 		# run docker without sudo
-		echo "\033[1;31mPlease do\033[0m \033[1;33m\"sudo usermod -aG docker $(whoami); newgrp docker\"\033[0m and \033[1;31mrerun\033[0m the script"
+		echo "\033[1;31m❗️Please do\033[0m \033[1;33m\"sudo usermod -aG docker $(whoami); newgrp docker\"\033[0m and \033[1;31mrerun\033[0m the script"
 		exit
 	fi
 fi
 
-## MINIKUBE & KUBERNETES
+## MINIKUBE & KUBERNETES & DOCKER
 
 if [ $(uname) = "Linux" ] ; then
-	echo "\033[1;36mOS : Linux\n\033[0m"
+	echo "\033[1;36m🐧 OS : Linux\n\033[0m"
 	# make sure docker is running
 	service docker restart
 	# run minikube
-	echo "\033[1;36mminikube running ...\033[0m"
+	echo "\033[1;36m\n🛳 minikube running ...\033[0m"
 	minikube start --vm-driver=docker
 else
-	echo "\033[1;36mOs : Macos\n\033[0m"
-
-	#### add installation of brew for campus
-	
-	# installing kubectl
-	if ! kubectl version --client 2>/dev/null 1>&2 ; then
-		echo "\033[1;32mkubectl installing\033[0m"
+	echo "\033[1;36m🍎 Os : Macos\n\033[0m"
+	# installation of brew
+	if ! which brew 2>/dev/null 1>&2 ; then
+		echo "\033[1;32m\n🍺 brew installing ...\033[0m"
+		rm -rf $HOME/.brew && git clone --depth=1 https://github.com/Homebrew/brew $HOME/.brew && echo 'export PATH=$HOME/.brew/bin:$PATH' >> $HOME/.zshrc && source $HOME/.zshrc && brew update
+	fi
+	# installation of kubectl
+	if ! which kubectl 2>/dev/null 1>&2 ; then
+		echo "\033[1;32m\n🛳  kubectl installing ...\033[0m"
 		brew install kubernetes-cli
 	fi
-	# installing minikube
-	if ! minikube version 2>/dev/null 1>&2 ; then
-		echo "\033[1;32mminikube installing\033[0m"
+	# installation of minikube
+	if ! which minikube 2>/dev/null 1>&2 ; then
+		echo "\033[1;32m\n🛳  minikube installing ...\033[0m"
 		brew install minikube
 	fi
+	if [ -d /goinfre ] ; then
+		# configuration in 42 campus
+		echo "\033[1;32m\n🐳 docker running ...\033[0m"
+		rm -rf /goinfre/$USER/docker
+		./srcs/init_docker.sh
+		echo "\033[1;32m\n↔️  link minikube folder to /goinfre/ ...\033[0m"
+		rm -rf /goinfre/$USER/.minikube
+		rm -rf ~/.kube
+		echo "export MINIKUBE_HOME=/goinfre/$USER/" >> ~/.zshrc
+		source ~/.zshrc
+	else
+		echo "\033[1;32m\n🐳 docker running ...\033[0m"
+		open -a docker
+	fi
 	# run minikube
-	echo "\033[1;36mminikube running\033[0m"
-	minikube start --vm-driver=virtualbox --memory=2g --cpus=2
+	echo "\033[1;36m\n♻️  clean old minikube if exist\033[0m"
+	minikube stop 2>/dev/null 1>&2 && sleep 2
+	minikube delete 2>/dev/null 1>&2 && sleep 2
+	echo "\033[1;32m\n🛳  minikube running ...\033[0m"
+	minikube start --vm-driver=virtualbox --memory=2g --cpus=2 || echo "\033[1;31mTry the command \"minikube delete\" if failed and relaunch the script.\033[0m"
 fi
 
 ## METALLB
@@ -98,12 +117,10 @@ function install_metallb()
 	kubectl apply -f srcs/yaml/metallb-configmap.yaml
 }
 
-kubectl get pods -n metallb-system 2>/dev/null | grep "controller" | grep "Running" 2>/dev/null 1>&2
-if [ $? -ne 0 ] ; then
+if ! kubectl get pods -n metallb-system 2>/dev/null | grep "controller" | grep "Running" 2>/dev/null 1>&2 ; then
 	# enable metallb plugin with minikube addons command
 	echo "\033[1;33mEnabling & configuring metallb ...\033[0m"
-	minikube addons enable metallb 2>/dev/null 1>&2
-	if [ $? -ne 0 ] ; then
+	if ! minikube addons enable metallb 2>/dev/null 1>&2 ; then
 		# install metallb in case of failure during activation
 		echo "\033[1;33mEnabling metallb with minikube addons command \033[1;31mfailed, try with manifest ...\033[0m"
 		install_metallb >/dev/null
@@ -111,3 +128,6 @@ if [ $? -ne 0 ] ; then
 		kubectl apply -f srcs/yaml/metallb-configmap.yaml
 	fi
 fi
+
+echo "\033[1;31m❗️ \nLauch the command \"minikube delete\" to clean minikube when finished ❗️\n\033[0m"
+zsh
