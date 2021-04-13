@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/12 22:56:00 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/13 11:33:30 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -113,6 +113,55 @@ function minikube_macos()
 	fi
 }
 
+## INSTALLATION OF METALLB
+
+function install_metallb()
+{
+	## Preparation
+
+	# see what changes would be made, returns nonzero returncode if different
+	kubectl get configmap kube-proxy -n kube-system -o yaml | \
+	sed -e "s/strictARP: false/strictARP: true/" | \
+	kubectl diff -f - -n kube-system
+
+	# actually apply the changes, returns nonzero returncode on errors only
+	kubectl get configmap kube-proxy -n kube-system -o yaml | \
+	sed -e "s/strictARP: false/strictARP: true/" | \
+	kubectl apply -f - -n kube-system
+
+	## Installation By Manifest
+
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/namespace.yaml
+	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
+	# On first install only
+	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+
+	kubectl apply -f srcs/yaml/metallb-configmap.yaml
+}
+
+## ENABLE / INSTALL METALLB
+
+function enable_metallb()
+{
+	kubectl get pods -n metallb-system 2>/dev/null | grep "controller" | grep "Running" 2>/dev/null 1>&2
+	if [ $? -ne 0 ] ; then
+		# enable metallb plugin with minikube addons command
+		echo ""$GREEN"Enabling & configuring metallb ..."$NONE""
+		minikube addons enable metallb 2>/dev/null 1>&2
+		if [ $? -ne 0 ] ; then
+			# install metallb in case of failure during activation
+			echo ""$GREEN"Enabling metallb with minikube addons command "$RED"failed"$GREEN", try with manifest ..."$NONE""
+			install_metallb >/dev/null
+		else
+			if [ $(uname) = "Linux" ] ; then
+				kubectl apply -f srcs/yaml/metallb-configmap_linux.yaml
+			elif [ $(uname) = "Darwin" ] ; then
+				kubectl apply -f srcs/yaml/metallb-configmap_macos.yaml
+			fi
+		fi
+	fi
+}
+
 # SCRIPT
 
 if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
@@ -133,6 +182,9 @@ if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
 		echo ""$GREEN"\n🛳  minikube running ..."$NONE""
 		minikube start --vm-driver=virtualbox --memory=2g --cpus=2 || echo ""$RED"Try the command \"minikube delete\" if failed and relaunch the script."$NONE""
 	fi
+
+	# enable metallb
+	enable_metallb
 
 	# enable dashboard plugin
 	echo ""$GREEN"Enabling dashboard ..."$NONE""
