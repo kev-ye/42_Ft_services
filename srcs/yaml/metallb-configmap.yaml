@@ -6,7 +6,7 @@ metadata:
 data:
   config: |
     address-pools:
-    - name: my-ip-space
+    - name: default
       protocol: layer2
       addresses: # use the command "minikube ip" to verify the ip address
-      - 192.168.99.200 - 192.168.99.300
+      - 192.168.99.10 - 192.168.99.100
