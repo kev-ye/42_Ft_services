@@ -34,7 +34,7 @@ $NONE"
 
 ## INSTALLATION OF MINIKUBE & KUBERNETES & DOCKER - FUNCTION
 
-function minikube_linux()
+minikube_linux()
 {
 	echo ""$CYAN"🐧 OS : Linux\n"$NONE""
 
@@ -56,7 +56,7 @@ function minikube_linux()
 	minikube delete
 }
 
-function minikube_macos()
+minikube_macos()
 {
 	echo ""$CYAN"🍎 Os : Macos\n"$NONE""
 
@@ -115,7 +115,7 @@ function minikube_macos()
 
 ## INSTALLATION OF METALLB
 
-function install_metallb()
+install_metallb()
 {
 	## Preparation
 
@@ -135,13 +135,11 @@ function install_metallb()
 	kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.6/manifests/metallb.yaml
 	# On first install only
 	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-
-	kubectl apply -f srcs/yaml/metallb-configmap.yaml
 }
 
 ## ENABLE / INSTALL METALLB
 
-function enable_metallb()
+enable_metallb()
 {
 	kubectl get pods -n metallb-system 2>/dev/null | grep "controller" | grep "Running" 2>/dev/null 1>&2
 	if [ $? -ne 0 ] ; then
@@ -152,6 +150,11 @@ function enable_metallb()
 			# install metallb in case of failure during activation
 			echo ""$GREEN"Enabling metallb with minikube addons command "$RED"failed"$GREEN", try with manifest ..."$NONE""
 			install_metallb >/dev/null
+			if [ $(uname) = "Linux" ] ; then
+				kubectl apply -f srcs/yaml/metallb-configmap_linux.yaml
+			elif [ $(uname) = "Darwin" ] ; then
+				kubectl apply -f srcs/yaml/metallb-configmap_macos.yaml
+			fi
 		else
 			if [ $(uname) = "Linux" ] ; then
 				kubectl apply -f srcs/yaml/metallb-configmap_linux.yaml
