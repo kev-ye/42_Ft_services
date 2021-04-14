@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/13 14:17:04 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/14 20:39:17 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -140,6 +140,17 @@ install_metallb()
 	kubectl apply -f ./srcs/yaml/metallb-configmap.yaml
 }
 
+## INSTALLATION OF SERVICES
+
+services_setup()
+{
+	for service in 'nginx' 'mysql' 'influxdb' 'wordpress' 'phpmyadmin' 'ftps' 'grafana'
+	do
+		echo "🛠  Building $GREEN$service ...$NONE"
+		# docker build -t $service ./srcs/config/$service
+	done
+}
+
 # SCRIPT
 
 if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
@@ -174,6 +185,14 @@ if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
 		install_metallb >/dev/null
 	fi
 
+	# enable ingress plugin
+	echo ""$GREEN"Enabling ingress ..."$NONE""
+	minikube addons enable ingress
+
+	# enable metrics-server plugin
+	echo ""$GREEN"Enabling metrics-server ..."$NONE""
+	minikube addons enable metrics-server
+
 	# enable dashboard plugin
 	echo ""$GREEN"Enabling dashboard ..."$NONE""
 	minikube addons enable dashboard
@@ -202,6 +221,11 @@ elif [ $# -eq 1 ] && [ $1 = 'install' ] ; then
 		# install minikube
 		minikube_macos
 	fi
+
+elif [ $# -eq 1 ] && [ $1 = 'services' ] ; then
+
+	# setup services
+	services_setup
 
 elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
 	if [ $(uname) = "Linux" ] ; then

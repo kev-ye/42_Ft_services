@@ -15,5 +15,6 @@ This is a System Administration and Networking project.
 [__Link_installation_of_metallb__](https://metallb.universe.tf/installation/)  
 [__Link_tuto_Dockerfile&kubernetes(Chinese versison)__](https://yeasy.gitbook.io/docker_practice/setup/kubeadm)  
 [__Link_tuto_Dockerfile&kubernetes2(Chinese versison)__](https://www.qikqiak.com/k8s-book/docs/18.YAML%20文件.html)
+[__Link_tuto_Dockerfile&kubernetes3(Chinese versison)__](https://ithelp.ithome.com.tw/articles/10193232)
 [__Link_tuto_kubernetes(chinese version)__](https://www.jianshu.com/p/5b9d15571757)  
 [__Link_tuto_kubernetes2(chinese version)__](https://www.jianshu.com/p/f143133ac7b5)

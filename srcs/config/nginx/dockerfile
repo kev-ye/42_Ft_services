@@ -1,5 +1,44 @@
 FROM alpine:latest
 
+# creat work folder
+COPY . /APP
+WORKDIR /APP
 
+# insall nginx openrc openssl openssh using apk add
+RUN apk update && apk add --no-cache nginx openrc openssl openssh
+
+# creat www folder
+RUN mkdir /www
+
+# add configure file
+ADD srcs/index.html /www
+ADD srcs/nginx.conf /etc/nginx
+
+# Create www group and www user for running nginx, otherwise it would be too dangerous to use root permissions
+RUN adduser -D -g 'www' www
+
+# Create a directory for storing webpage files, and belong to the www group and www users
+RUN chown -R www:www /var/lib/nginx
+RUN chown -R www:www /www
+
+
+# Create ssl certificate
+RUN mkdir /etc/nginx/ssl
+RUN openssl req \
+        -x509 \
+        -newkey rsa:4096 \
+        -sha256 \
+        -nodes \
+        -keyout /etc/nginx/ssl/key.pem \
+        -out /etc/nginx/ssl/cert.pem \
+        -days 3650 \
+        -subj "/CN=FR/ST=Paris/L=Paris/O=42/OU=42/CN=kaye"
+
+# Create the directory needed for nginx to run
+RUN mkdir /run/nginx/
+
+VOLUME [ “/sys/fs/cgroup” ]
 
 EXPOSE 80 443 22
+
+CMD ["/bin/sh", "./srcs/init.sh"]
