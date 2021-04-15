@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/14 20:39:17 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/15 20:40:21 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -105,7 +105,7 @@ minikube_macos()
 
 		# run docker
 		echo ""$GREEN"\n🐳 docker running ..."$NONE""
-		open -a docker
+		open -g -a docker
 	
 		# clean old minikube
 		echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
