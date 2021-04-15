@@ -1,14 +1,19 @@
-# configure ssh
-sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/g'  /etc/ssh/sshd_config  \
-    && rc-update add sshd 
+# # configure ssh
+# sed -i 's/#PermitRootLogin.*/PermitRootLogin yes/g'  /etc/ssh/sshd_config  \
+#     && rc-update add sshd 
 
-# staring nginx & ssh
+# init
 openrc
-touch /run/openrc/softlevel 
-service nginx start
-service sshd restart 
+touch /run/openrc/softlevel
+
+# # run nginx
+# service nginx start
+
+# # run sshd
+# service sshd restart 
 
 # # to keep the Container running
 # tail -f /dev/null
 
-sh
+# To run in foreground:
+nginx -g 'daemon off;'
