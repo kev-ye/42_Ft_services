@@ -1,12 +1,13 @@
+# init
+openrc
+touch /run/openrc/softlevel
+
 mv /APP/srcs/wp-config.php /var/www/wordpress/wordpress
 
-# openrc
-# touch /run/openrc/softlevel
-
 # run php
-# php-fpm7
+php-fpm7
 
 # run nginx
-# service nginx start
+rc-service nginx start
 
 sh

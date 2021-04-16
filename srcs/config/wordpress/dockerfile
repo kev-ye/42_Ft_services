@@ -12,7 +12,7 @@ COPY . /APP
 WORKDIR /APP
 
 # can't run nginx, if this file no exist
-# RUN mkdir /run/nginx;
+RUN mkdir /run/nginx;
 
 ADD srcs/nginx.conf /etc/nginx/conf.d/default.conf
 
@@ -26,9 +26,9 @@ ADD srcs/nginx.conf /etc/nginx/conf.d/default.conf
 
 # at home /etc/resolv.conf : nameserver 192.168.65.5
 RUN mkdir /var/www/wordpress \
-	&& wget https://wordpress.org/latest.tar.gz -P /var/www/  \
-	&& tar -xzvf /var/www/latest.tar.gz -C /var/www/ \
-	&& rm /var/www/latest.tar.gz
+	&& wget https://wordpress.org/latest.tar.gz -P /var/www/wordpress  \
+	&& tar -xzvf /var/www/wordpress/latest.tar.gz -C /var/www/wordpress \
+	&& rm /var/www/wordpress/latest.tar.gz
 
 EXPOSE 5050
 

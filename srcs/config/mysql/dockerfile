@@ -1,1 +1,9 @@
 FROM alpine:latest
+
+RUN apk update \
+	&& apk add --no-cache openrc \
+	&& apk add --no-cache mariadb mariadb-common mariadb-client
+
+WORKDIR /APP
+
+EXPOSE 3306
