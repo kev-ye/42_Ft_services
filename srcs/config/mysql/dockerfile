@@ -1,9 +1,24 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    dockerfile                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/04/16 19:09:32 by kaye              #+#    #+#              #
+#    Updated: 2021/04/16 21:11:35 by kaye             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 FROM alpine:latest
 
 RUN apk update \
 	&& apk add --no-cache openrc \
 	&& apk add --no-cache mariadb mariadb-common mariadb-client
 
+COPY . /APP
 WORKDIR /APP
 
 EXPOSE 3306
+
+CMD ["/bin/sh", "./srcs/init.sh"]
