@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/04/16 19:08:35 by kaye              #+#    #+#              #
-#    Updated: 2021/04/20 15:09:32 by kaye             ###   ########.fr        #
+#    Created: 2021/04/20 13:32:05 by kaye              #+#    #+#              #
+#    Updated: 2021/04/20 15:09:41 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,23 +14,14 @@
 openrc
 touch /run/openrc/softlevel
 
-# add wp config file
-mv /APP/srcs/wp-config.php /var/www/wordpress/wordpress/
+# add phpmyadmin config file
+cp /APP/srcs/config.inc.php /var/www/phpmyadmin/phpmyadmin/config.inc.php
 
-# configure mysql ip
-sed -i "s/MYSQL_IP/$SQL_IP/g" /var/www/wordpress/wordpress/wp-config.php
-
-# configure msql password
-sed -i "s/WP_PASSWORD/$WP_PASS/g" /var/www/wordpress/wordpress/wp-config.php
-
-# run php
-# php-fpm7
-
-# run nginx
-# rc-service nginx start
+# give mysql ip
+sed -i "s/MYSQL_IP/$SQL_IP/g" /var/www/phpmyadmin/phpmyadmin/config.inc.php
 
 # run php server
-php -S 0.0.0.0:5050 -t /var/www/wordpress/wordpress
+php -S 0.0.0.0:5000 -t /var/www/phpmyadmin/phpmyadmin
 
 # to keep the Container running
 # tail -f /dev/null

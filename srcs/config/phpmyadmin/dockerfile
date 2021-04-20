@@ -6,23 +6,40 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:03 by kaye              #+#    #+#              #
-#    Updated: 2021/04/16 19:09:04 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/20 14:09:20 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM alpine:latest
 
 RUN apk update \
-	&& apk add php7-common php7-session php7-iconv php7-json \
+	&& apk add --no-cache php7 openrc wget \
+	&& apk add --no-cache php7-common php7-session php7-iconv php7-json \
 	php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi \
 	fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix \
 	php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom
 
-RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz \
-	&& tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz \
-	&& rm phpMyAdmin-5.0.2-all-languages.tar.gz \
-	&& mv phpMyAdmin-5.0.2-all-languages /var/www/phpmyadmin \
-	&& chmod -R 777 /var/www/
+COPY . /APP
+WORKDIR /APP
 
+
+# RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz \
+# 	&& tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz \
+# 	&& rm phpMyAdmin-5.0.2-all-languages.tar.gz \
+# 	&& mv phpMyAdmin-5.0.2-all-languages /var/www/phpmyadmin \
+# 	&& chmod -R 777 /var/www/
+
+# at macos 42 campus
+RUN mkdir -p /var/www/phpmyadmin \
+	&& cp /etc/resolv.conf . \
+	&& echo "nameserver 8.8.8.8" > /etc/resolv.conf \
+	&& wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz -P /var/www/phpmyadmin/ \
+	&& tar -zxvf /var/www/phpmyadmin/phpMyAdmin-5.0.2-all-languages.tar.gz -C /var/www/phpmyadmin/ \
+	&& mv /var/www/phpmyadmin/phpMyAdmin-5.0.2-all-languages /var/www/phpmyadmin/phpmyadmin \
+	&& rm /var/www/phpmyadmin/phpMyAdmin-5.0.2-all-languages.tar.gz \
+	&& chmod -R 777 /var/www/
+RUN cat ./resolv.conf > /etc/resolv.conf && rm ./resolv.conf
 
 EXPOSE 5000
+
+CMD ["/bin/sh", "./srcs/init.sh"]

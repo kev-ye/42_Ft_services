@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:41 by kaye              #+#    #+#              #
-#    Updated: 2021/04/20 12:19:37 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/20 15:09:45 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,7 @@ touch /run/openrc/softlevel
 
 # remote access
 sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
+sed -i 's/#bind-address/bind-address/g' /etc/my.cnf.d/mariadb-server.cnf
 
 # start mariadb
 rc-service mariadb start
@@ -38,8 +39,11 @@ echo "flush privileges" | mysql -u root
 echo "show databases" | mysql -u root | grep 'wordpress'
 echo "show databases" | mysql -u root | grep 'admin'
 
-# resolve "access denied for user" problem
-sed -i 's/\[mysqld\]/&\nskip-grant-tables/' /etc/my.cnf
-rc-service mariadb restart
+# # resolve "access denied for user" problem
+# sed -i 's/\[mysqld\]/&\nskip-grant-tables/' /etc/my.cnf
+# rc-service mariadb restart
+
+# to keep the Container running
+# tail -f /dev/null
 
 sh
