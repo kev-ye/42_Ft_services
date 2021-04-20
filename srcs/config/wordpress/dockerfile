@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:08:46 by kaye              #+#    #+#              #
-#    Updated: 2021/04/20 13:31:24 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/20 21:13:29 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ RUN mkdir -p /var/www/wordpress \
 RUN cat ./resolv.conf > /etc/resolv.conf && rm ./resolv.conf
 
 # home / (no try with VM)
-# RUN mkdir /var/www/wordpress \
+# RUN mkdir -p /var/www/wordpress \
 # 	&& wget https://wordpress.org/latest.tar.gz -P /var/www/wordpress  \
 # 	&& tar -xzvf /var/www/wordpress/latest.tar.gz -C /var/www/wordpress \
 # 	&& rm /var/www/wordpress/latest.tar.gz

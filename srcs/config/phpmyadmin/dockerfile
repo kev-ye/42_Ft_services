@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:03 by kaye              #+#    #+#              #
-#    Updated: 2021/04/20 14:09:20 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/20 21:13:08 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,12 @@ RUN apk update \
 COPY . /APP
 WORKDIR /APP
 
-
-# RUN wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz \
-# 	&& tar zxvf phpMyAdmin-5.0.2-all-languages.tar.gz \
-# 	&& rm phpMyAdmin-5.0.2-all-languages.tar.gz \
-# 	&& mv phpMyAdmin-5.0.2-all-languages /var/www/phpmyadmin \
+# at home
+# RUN mkdir -p /var/www/phpmyadmin \
+# 	&& wget http://files.directadmin.com/services/all/phpMyAdmin/phpMyAdmin-5.0.2-all-languages.tar.gz -P /var/www/phpmyadmin/ \
+# 	&& tar -xvf /var/www/phpmyadmin/phpMyAdmin-5.0.2-all-languages.tar.gz -C /var/www/phpmyadmin/ \
+# 	&& mv /var/www/phpmyadmin/phpMyAdmin-5.0.2-all-languages /var/www/phpmyadmin/phpmyadmin \
+# 	&& rm /var/www/phpmyadmin/phpMyAdmin-5.0.2-all-languages.tar.gz \
 # 	&& chmod -R 777 /var/www/
 
 # at macos 42 campus

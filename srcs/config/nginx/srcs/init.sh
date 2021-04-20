@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:09 by kaye              #+#    #+#              #
-#    Updated: 2021/04/16 19:09:11 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/20 21:14:09 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,17 @@
 openrc
 touch /run/openrc/softlevel
 
-# # run nginx
-# service nginx start
+# run nginx
+service nginx start
 
-# # run sshd
+# run sshd
 # service sshd restart 
 
-# # to keep the Container running
+# to keep the Container running
 # tail -f /dev/null
 
 # To run in foreground:
-nginx -g 'daemon off;'
+# nginx -g 'daemon off;'
+
+# debug
+sh
