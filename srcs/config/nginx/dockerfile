@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:27 by kaye              #+#    #+#              #
-#    Updated: 2021/04/20 21:13:41 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/23 23:05:17 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ RUN apk update && apk add --no-cache nginx openrc openssl openssh
 RUN mkdir /www
 
 # add configure file
-ADD srcs/index.html /www
+ADD srcs/page/index.html /www
+ADD srcs/page/style.css /www
 ADD srcs/nginx.conf /etc/nginx
 
 # Create www group and www user for running nginx, otherwise it would be too dangerous to use root permissions
