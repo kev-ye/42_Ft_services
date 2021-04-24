@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/20 13:32:05 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 18:43:32 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/24 20:53:33 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ touch /run/openrc/softlevel
 # add phpmyadmin config file
 cp /APP/srcs/config.inc.php /var/www/phpmyadmin/phpmyadmin/config.inc.php
 
-# give mysql ip
-sed -i "s/MYSQL_IP/$SQL_IP/g" /var/www/phpmyadmin/phpmyadmin/config.inc.php
+# onfigure mysql ip
+# sed -i "s/MYSQL_IP/$SQL_IP/g" /var/www/phpmyadmin/phpmyadmin/config.inc.php
 
 # run php server
 php -S 0.0.0.0:5000 -t /var/www/phpmyadmin/phpmyadmin
