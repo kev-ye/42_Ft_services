@@ -6,18 +6,18 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 20:21:09 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/24 22:15:21 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ## COMMAND TO RUN SCRIPT
-# ./setup.sh start/restart	: run minikube
-# ./setup.sh services		: run services
+# ./setup.sh start/restart	: start
+# ./setup.sh services		: intall services
+# ./setup.sh delsvc			: uninstall services
 # ./setup.sh delete			: clean minikube config
-# ./setup.sh clean_all		: clean all file
+# ./setup.sh clean_all		: clean all files + uninstall kubernetes & minikube
 
 ## ANSI COLOR CODES
-
 BLACK="\033[1;30m"
 RED="\033[1;31m"
 GREEN="\033[1;32m"
@@ -37,11 +37,12 @@ echo "$CLR_SCREEN$CYAN\
 |_|    \__|___|___/\___|_|    \_/ |_|\___\___||___/
          |_____|
 $NONE"
-echo "🖥  OS - "$PURPLE"$(uname)"$NONE" -\n"
+echo "🖥  OS - "$PURPLE"$(uname)"$NONE" -"
 
-## INSTALLATION OF MINIKUBE & KUBERNETES & DOCKER - FUNCTION
+### FUNCTION
 
-minikube_linux()
+## INSTALLATION OF KUBERNETES & MINIKUBE & DOCKER - LINUX
+install_minikube_linux()
 {
 	## CONFIG FOR LINUX
 	echo ""$RED"\n(If you are in the VM, please check if you are running with 2 cores)\n"$NONE""
@@ -61,7 +62,8 @@ minikube_linux()
 	minikube delete
 }
 
-minikube_macos()
+## INSTALLATION OF KUBERNETES & MINIKUBE & DOCKER - MACOS
+install_minikube_macos()
 {
 	# installation of brew
 	if ! which brew 2>/dev/null 1>&2 ; then
@@ -117,7 +119,6 @@ minikube_macos()
 }
 
 ## INSTALLATION OF METALLB
-
 install_metallb()
 {
 	## Preparation
@@ -144,8 +145,7 @@ install_metallb()
 }
 
 ## INSTALLATION OF SERVICES
-
-services_setup()
+setup_services()
 {
 	# for service in 'nginx' 'mysql' 'influxdb' 'wordpress' 'phpmyadmin' 'ftps' 'grafana'
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
@@ -161,28 +161,29 @@ services_setup()
 	done
 }
 
-# SCRIPT
-
-if [ $# -lt 1 ] || [ $1 = 'start' ] || [ $1 = 'restart' ] ; then
-
+## FT_SERVICES
+ft_services()
+{
 	if [ $(uname) = "Linux" ] ; then
 
 		# install minikube
-		minikube_linux
+		install_minikube_linux
 
 		# run minikube
 		echo ""$CYAN"\n🛳 minikube running ..."$NONE""
 		minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
+
 	elif [ $(uname) = "Darwin" ] ; then
 
 		# install minikube
-		minikube_macos
+		install_minikube_macos
 
 		# run minikube
 		echo ""$GREEN"\n🛳  minikube running ..."$NONE""
 		minikube start --vm-driver=virtualbox --memory=2g --cpus=2 --extra-config=apiserver.service-node-port-range=1-65535
+
 		if [ $? -ne 0 ] ; then
-			echo ""$RED"Try the command \"minikube delete\" if failed and relaunch the script."$NONE""
+			echo ""$RED"FAILED ! Try the command \"minikube delete\" and relaunch the script."$NONE""
 			exit
 		fi
 	fi
@@ -213,30 +214,44 @@ if [ $# -lt 1 ] || [ $1 = 'start' ] || [ $1 = 'restart' ] ; then
 	# minikube addons enable ingress
 
 	# setup services
-	services_setup
+	setup_services
 
 	# installation done
 	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""
 
+	# open minikube dashboard
+	echo ""$GREEN"open dashboard ..."$NONE""
+	minikube dashboard
+
 	# open web page
+	echo ""$GREEN"open web page ..."$NONE""
 	open http://$(minikube ip)
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
+}
 
+### SCRIPT
+
+## FT_SERVICE START
+if [ $# -lt 1 ] || [ $1 = 'start' ] || [ $1 = 'restart' ] ; then
+
+	ft_services
+
+## DELETE MINIKUBE
 elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
 
-	# delete minikube
 	if which minikube 2>/dev/null 1>&2 ; then
 		echo ""$CYAN"\n♻️  clean minikube ..."$NONE""
 		minikube delete
 	fi
 
+## INSTALL SERVICES
 elif [ $# -eq 1 ] && [ $1 = 'services' ] ; then
 
-	# setup services
-	services_setup
+	setup_services
 
+## UNINSTALL SERVICES
 elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
@@ -245,6 +260,7 @@ elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 		kubectl delete -f srcs/yaml/$service-deployment.yaml
 	done
 
+## CLEAN ALL FILES
 elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
 	if [ $(uname) = "Linux" ] ; then
 
@@ -258,6 +274,7 @@ elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
 		echo ""$CYAN"\n♻️  clean minikube folder ..."$NONE""
 		rm -rf $HOME/.kube
 		rm -rf $HOME/.minikube
+
 	elif [ $(uname) = "Darwin" ] ; then
 
 		# delete minikube
