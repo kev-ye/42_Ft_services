@@ -6,9 +6,15 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/15 20:40:21 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/24 20:21:09 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+## COMMAND TO RUN SCRIPT
+# ./setup.sh start/restart	: run minikube
+# ./setup.sh services		: run services
+# ./setup.sh delete			: clean minikube config
+# ./setup.sh clean_all		: clean all file
 
 ## ANSI COLOR CODES
 
@@ -31,13 +37,12 @@ echo "$CLR_SCREEN$CYAN\
 |_|    \__|___|___/\___|_|    \_/ |_|\___\___||___/
          |_____|
 $NONE"
+echo "🖥  OS - "$PURPLE"$(uname)"$NONE" -\n"
 
 ## INSTALLATION OF MINIKUBE & KUBERNETES & DOCKER - FUNCTION
 
 minikube_linux()
 {
-	echo ""$CYAN"🐧 OS : Linux\n"$NONE""
-
 	## CONFIG FOR LINUX
 	echo ""$RED"\n(If you are in the VM, please check if you are running with 2 cores)\n"$NONE""
 	cat /etc/group | grep "docker" | grep $(whoami) 2>/dev/null 1>&2
@@ -58,8 +63,6 @@ minikube_linux()
 
 minikube_macos()
 {
-	echo ""$CYAN"🍎 Os : Macos\n"$NONE""
-
 	# installation of brew
 	if ! which brew 2>/dev/null 1>&2 ; then
 		echo ""$GREEN"\n🍺 brew installing ..."$NONE""
@@ -144,16 +147,24 @@ install_metallb()
 
 services_setup()
 {
-	for service in 'nginx' 'mysql' 'influxdb' 'wordpress' 'phpmyadmin' 'ftps' 'grafana'
+	# for service in 'nginx' 'mysql' 'influxdb' 'wordpress' 'phpmyadmin' 'ftps' 'grafana'
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		echo "🛠  Building $GREEN$service ...$NONE"
-		# docker build -t $service ./srcs/config/$service
+		docker build -t svc_$service ./srcs/config/$service
+	done
+
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
+	do
+		echo "🛠  Applicating $GREEN$service ...$NONE"
+		kubectl create -f srcs/yaml/$service-deployment.yaml
 	done
 }
 
 # SCRIPT
 
-if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
+if [ $# -lt 1 ] || [ $1 = 'start' ] || [ $1 = 'restart' ] ; then
+
 	if [ $(uname) = "Linux" ] ; then
 
 		# install minikube
@@ -161,7 +172,7 @@ if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
 
 		# run minikube
 		echo ""$CYAN"\n🛳 minikube running ..."$NONE""
-		minikube start --vm-driver=docker
+		minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
 	elif [ $(uname) = "Darwin" ] ; then
 
 		# install minikube
@@ -169,12 +180,16 @@ if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
 
 		# run minikube
 		echo ""$GREEN"\n🛳  minikube running ..."$NONE""
-		minikube start --vm-driver=virtualbox --memory=2g --cpus=2
+		minikube start --vm-driver=virtualbox --memory=2g --cpus=2 --extra-config=apiserver.service-node-port-range=1-65535
 		if [ $? -ne 0 ] ; then
 			echo ""$RED"Try the command \"minikube delete\" if failed and relaunch the script."$NONE""
 			exit
 		fi
 	fi
+
+	# linking image from minikube to docker, whitout this, minikube can't found images built locally
+	echo ""$GREEN"\n↔️  linking image from minikube to docker ..."$NONE""
+	eval $(minikube docker-env)
 
 	# check if metallb exist
 	kubectl get pods -n metallb-system 2>/dev/null | grep "controller" | grep "Running" 2>/dev/null 1>&2
@@ -185,10 +200,6 @@ if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
 		install_metallb >/dev/null
 	fi
 
-	# enable ingress plugin
-	echo ""$GREEN"Enabling ingress ..."$NONE""
-	minikube addons enable ingress
-
 	# enable metrics-server plugin
 	echo ""$GREEN"Enabling metrics-server ..."$NONE""
 	minikube addons enable metrics-server
@@ -197,8 +208,18 @@ if [ $# -lt 1 ] || [ $1 = 'run' ] || [ $1 = 'relaunch' ] ; then
 	echo ""$GREEN"Enabling dashboard ..."$NONE""
 	minikube addons enable dashboard
 
+	# enable ingress plugin
+	# echo ""$GREEN"Enabling ingress ..."$NONE""
+	# minikube addons enable ingress
+
+	# setup services
+	services_setup
+
 	# installation done
 	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""
+
+	# open web page
+	open http://$(minikube ip)
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
@@ -211,21 +232,18 @@ elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
 		minikube delete
 	fi
 
-elif [ $# -eq 1 ] && [ $1 = 'install' ] ; then
-	if [ $(uname) = "Linux" ] ; then
-
-		# install minikube
-		minikube_linux
-	elif [ $(uname) = "Darwin" ] ; then
-
-		# install minikube
-		minikube_macos
-	fi
-
 elif [ $# -eq 1 ] && [ $1 = 'services' ] ; then
 
 	# setup services
 	services_setup
+
+elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
+
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
+	do
+		echo "🛠  Applicating $GREEN$service ...$NONE"
+		kubectl delete -f srcs/yaml/$service-deployment.yaml
+	done
 
 elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
 	if [ $(uname) = "Linux" ] ; then

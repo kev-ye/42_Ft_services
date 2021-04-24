@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/20 13:32:05 by kaye              #+#    #+#              #
-#    Updated: 2021/04/23 19:27:41 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/24 18:43:32 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ sed -i "s/MYSQL_IP/$SQL_IP/g" /var/www/phpmyadmin/phpmyadmin/config.inc.php
 php -S 0.0.0.0:5000 -t /var/www/phpmyadmin/phpmyadmin
 
 # to keep the Container running
-# tail -f /dev/null
+tail -f /dev/null
 
 # debug
 # sh

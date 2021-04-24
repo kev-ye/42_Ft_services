@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: svc_mysql
+        imagePullPolicy: Never
+        env:
+          - name: WP_PASS
+            value: "wppass"
+          - name: ADMIN_PASS
+            value: "adminpass"
+        ports:
+        - containerPort: 3306
+          name: mysql-http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  type: LoadBalancer
+  ports:
+  - port: 3306
+    targetPort: 3306
+    nodePort: 3306
+    name: mysql-http
