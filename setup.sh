@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/25 16:39:21 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/25 21:14:38 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,10 +47,10 @@ install_minikube_linux()
 	## CONFIG FOR LINUX
 	echo ""$RED"\n(If you are in the VM, please check if you are running with 2 cores)\n"$NONE""
 	cat /etc/group | grep "docker" | grep $(whoami) 2>/dev/null 1>&2
-	# -ne : !=
+
 	if [ $? -ne 0 ] ; then
 		# run docker without sudo
-		echo ""$RED"❗️Please do"$NONE" "$YELLOW"\"sudo usermod -aG docker $(whoami); newgrp docker\""$NONE" and "$RED"rerun"$NONE" the script"
+		echo ""$RED"❗️Please do"$NONE" "$YELLOW"\"sudo usermod -aG docker $(whoami); newgrp docker\""$NONE""
 		exit
 	fi
 
@@ -80,37 +80,19 @@ install_minikube_macos()
 	# check if /goinfre folder exist (at 42)
 	if [ -d /goinfre ] ; then
 
-		# configuration in 42
-		# echo ""$GREEN"\n🐳 docker running ..."$NONE""
-		# rm -rf /goinfre/$USER/docker
-		# ./srcs/init_docker.sh
-	
-		# link minikube folder to goinfre
-		if [ $MINIKUBE_HOME ] ; then
+		if ! cat $HOME/.zshrc | grep "export MINIKUBE_HOME=/goinfre/$USER" 2>/dev/null 1>&2 ; then
+
+			# linking minikube folder to goinfre
+			echo ""$GREEN"\n↔️  linking minikube folder to /goinfre/\$USER ..."$NONE""
+			echo "export MINIKUBE_HOME=/goinfre/$USER" >> $HOME/.zshrc
+			source $HOME/.zshrc
+		else
 
 			# clean old minikube
-			if [ "$MINIKUBE_HOME" = "/goinfre/$USER" ] ; then
-				echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
-				minikube delete
-			fi
-		else
-	
-			# clean old minikube & minikube folder & relink to /goinfre/$USER
 			echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
 			minikube delete
-			rm -rf $HOME/.kube
-			rm -rf $HOME/.minikube
-			if ! grep MINIKUBE_HOME 2>/dev/null 1>&2 ; then
-				echo ""$GREEN"\n↔️  link minikube folder to /goinfre/\$USER ..."$NONE""
-				echo "export MINIKUBE_HOME=/goinfre/$USER" >> $HOME/.zshrc
-				source $HOME/.zshrc
-			fi
 		fi
 	else
-
-		# run docker
-		# echo ""$GREEN"\n🐳 docker running ..."$NONE""
-		# open -g -a docker
 	
 		# clean old minikube
 		echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
@@ -152,16 +134,26 @@ install_metallb()
 setup_services()
 {
 	# for service in 'nginx' 'mysql' 'influxdb' 'wordpress' 'phpmyadmin' 'ftps' 'grafana'
+	echo ""
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		echo "🛠  Building $GREEN$service ...$NONE"
-		docker build -t svc_$service ./srcs/config/$service
+		docker build -t svc_$service ./srcs/config/$service 2>/dev/null 1>&2
+		if [ $? -ne 0 ] ; then
+			echo ""$RED"Error during building !$NONE"
+			exit
+		fi
 	done
 
+	echo ""
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		echo "🛠  Applicating $GREEN$service ...$NONE"
-		kubectl create -f srcs/yaml/$service-deployment.yaml
+		kubectl apply -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
+		if [ $? -ne 0 ] ; then
+			echo ""$RED"Error during applicating !$NONE"
+			exit
+		fi
 	done
 }
 
@@ -175,7 +167,7 @@ ft_services()
 
 		# run minikube
 		echo ""$CYAN"\n🛳  minikube running ..."$NONE""
-		minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
+		minikube start --vm-driver=docker --memory=2g --cpus=2 --extra-config=apiserver.service-node-port-range=1-65535
 
 	elif [ $(uname) = "Darwin" ] ; then
 
@@ -192,15 +184,15 @@ ft_services()
 		fi
 	fi
 
-	# linking image from minikube to docker, whitout this, minikube can't found images built locally
+	# use minikube docker, whitout this, minikube can't found images built locally
 	eval $(minikube docker-env)
 
 	# check if metallb exist
-	kubectl get pods -n metallb-system 2>/dev/null | grep "controller" | grep "Running" 2>/dev/null 1>&2
+	kubectl get pods -n metallb-system 2>/dev/null 1>&2 | grep "controller" | grep "Running" 2>/dev/null 1>&2
 	if [ $? -ne 0 ] ; then
 
 		# install metallb with manifest
-		echo ""$GREEN"install & configure metallb ..."$NONE""
+		echo ""$GREEN"\ninstall & configure metallb ..."$NONE""
 		install_metallb >/dev/null
 	fi
 
@@ -211,10 +203,6 @@ ft_services()
 	# enable dashboard plugin
 	# echo ""$GREEN"Enabling dashboard ..."$NONE""
 	# minikube addons enable dashboard
-
-	# enable ingress plugin
-	# echo ""$GREEN"Enabling ingress ..."$NONE""
-	# minikube addons enable ingress
 
 	# setup services
 	setup_services
@@ -241,8 +229,17 @@ if [ $# -lt 1 ] || [ $1 = 'start' ] || [ $1 = 'restart' ] ; then
 
 	ft_services
 
-## DELETE MINIKUBE
+## DELETE MINIKUBE & SERVICES
 elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
+
+	echo ""
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
+	do
+		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
+			echo "♻️  Deleting $CYAN$service ...$NONE"
+			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
+		fi
+	done
 
 	if which minikube 2>/dev/null 1>&2 ; then
 		echo ""$CYAN"\n♻️  clean minikube ..."$NONE""
@@ -257,10 +254,13 @@ elif [ $# -eq 1 ] && [ $1 = 'services' ] ; then
 ## UNINSTALL SERVICES
 elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 
+	echo ""
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
-		echo "🛠  Applicating $GREEN$service ...$NONE"
-		kubectl delete -f srcs/yaml/$service-deployment.yaml
+		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
+			echo "♻️  Deleting $CYAN$service ...$NONE"
+			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
+		fi
 	done
 
 ## CLEAN ALL FILES
@@ -295,10 +295,5 @@ elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
 		if [ -d /goinfre ] ; then
 			rm -rf /goinfre/$USER/.minikube
 		fi
-
-		# delete minikube app
-		echo ""$CYAN"\n♻️  clean minikube app ..."$NONE""
-		brew uninstall minikube
-		brew uninstall kubernetes-cli
 	fi
 fi
