@@ -205,12 +205,12 @@ ft_services()
 	fi
 
 	# enable metrics-server plugin
-	echo ""$GREEN"Enabling metrics-server ..."$NONE""
-	minikube addons enable metrics-server
+	# echo ""$GREEN"Enabling metrics-server ..."$NONE""
+	# minikube addons enable metrics-server
 
 	# enable dashboard plugin
-	echo ""$GREEN"Enabling dashboard ..."$NONE""
-	minikube addons enable dashboard
+	# echo ""$GREEN"Enabling dashboard ..."$NONE""
+	# minikube addons enable dashboard
 
 	# enable ingress plugin
 	# echo ""$GREEN"Enabling ingress ..."$NONE""
@@ -219,17 +219,16 @@ ft_services()
 	# setup services
 	setup_services
 
+	# show services
+	echo ""$CLR_SCREEN$GREEN"show services ..."$NONE""
+	minikube service list
+
 	# installation done
 	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""
 
-	# open web page
-	echo ""$GREEN"open web page ..."$NONE""
-	open http://$(minikube ip)
-
 	# open minikube dashboard
-	echo ""$GREEN"open dashboard ..."$NONE""
-	minikube dashboard
-
+	# echo ""$GREEN"open dashboard ..."$NONE""
+	# minikube dashboard
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
