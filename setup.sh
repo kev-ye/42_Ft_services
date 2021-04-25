@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/25 15:02:23 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/25 16:39:21 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,9 +81,9 @@ install_minikube_macos()
 	if [ -d /goinfre ] ; then
 
 		# configuration in 42
-		echo ""$GREEN"\n🐳 docker running ..."$NONE""
-		rm -rf /goinfre/$USER/docker
-		./srcs/init_docker.sh
+		# echo ""$GREEN"\n🐳 docker running ..."$NONE""
+		# rm -rf /goinfre/$USER/docker
+		# ./srcs/init_docker.sh
 	
 		# link minikube folder to goinfre
 		if [ $MINIKUBE_HOME ] ; then
@@ -109,8 +109,8 @@ install_minikube_macos()
 	else
 
 		# run docker
-		echo ""$GREEN"\n🐳 docker running ..."$NONE""
-		open -g -a docker
+		# echo ""$GREEN"\n🐳 docker running ..."$NONE""
+		# open -g -a docker
 	
 		# clean old minikube
 		echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
