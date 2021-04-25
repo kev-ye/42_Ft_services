@@ -141,7 +141,11 @@ install_metallb()
 	kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
 	# applicate the yaml configuration
-	kubectl apply -f ./srcs/yaml/metallb-configmap.yaml
+	if [ $(uname) = "Linux" ] ; then
+		kubectl apply -f ./srcs/yaml/metallb-configmap_linux.yaml
+	elif [ $(uname) = "Darwin" ] ; then
+		kubectl apply -f ./srcs/yaml/metallb-configmap_macos.yaml
+	fi
 }
 
 ## INSTALLATION OF SERVICES
@@ -170,7 +174,7 @@ ft_services()
 		install_minikube_linux
 
 		# run minikube
-		echo ""$CYAN"\n🛳 minikube running ..."$NONE""
+		echo ""$CYAN"\n🛳  minikube running ..."$NONE""
 		minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-65535
 
 	elif [ $(uname) = "Darwin" ] ; then
@@ -189,7 +193,6 @@ ft_services()
 	fi
 
 	# linking image from minikube to docker, whitout this, minikube can't found images built locally
-	echo ""$GREEN"\n↔️  linking image from minikube to docker ..."$NONE""
 	eval $(minikube docker-env)
 
 	# check if metallb exist
@@ -219,13 +222,14 @@ ft_services()
 	# installation done
 	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""
 
+	# open web page
+	echo ""$GREEN"open web page ..."$NONE""
+	open http://$(minikube ip)
+
 	# open minikube dashboard
 	echo ""$GREEN"open dashboard ..."$NONE""
 	minikube dashboard
 
-	# open web page
-	echo ""$GREEN"open web page ..."$NONE""
-	open http://$(minikube ip)
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh

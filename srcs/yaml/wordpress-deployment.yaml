@@ -19,7 +19,7 @@ spec:
         image: svc_wordpress
         imagePullPolicy: Never
         env:
-          - name: WP_PASSWORD
+          - name: WP_PASS
             value: "wppass"
         ports:
         - containerPort: 5050
