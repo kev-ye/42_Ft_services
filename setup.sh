@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 22:15:21 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/25 15:02:23 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -220,8 +220,8 @@ ft_services()
 	setup_services
 
 	# show services
-	echo ""$CLR_SCREEN$GREEN"show services ..."$NONE""
-	minikube service list
+	# echo ""$CLR_SCREEN$GREEN"show services ..."$NONE""
+	# minikube service list
 
 	# installation done
 	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""

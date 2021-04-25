@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:27 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 19:26:44 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/25 14:57:12 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ FROM alpine:latest
 # creat work folder
 COPY . /APP
 WORKDIR /APP
+
+VOLUME /sys/fs/cgroup
 
 # insall nginx openrc openssl openssh using apk add
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
@@ -50,8 +52,6 @@ RUN openssl req \
 
 # Create the directory needed for nginx to run
 RUN mkdir /run/nginx/
-
-# VOLUME [ “/sys/fs/cgroup” ]
 
 EXPOSE 80 443 22
 
