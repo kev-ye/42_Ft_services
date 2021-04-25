@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/25 21:14:38 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/25 23:31:23 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@
 # ./setup.sh start/restart	: start
 # ./setup.sh services		: intall services
 # ./setup.sh delsvc			: uninstall services
-# ./setup.sh delete			: clean minikube config
-# ./setup.sh clean_all		: clean all files + uninstall kubernetes & minikube
+# ./setup.sh delete			: uninstall services & clean minikube config
+# ./setup.sh clean_all		: clean all files
 
 ## ANSI COLOR CODES
 BLACK="\033[1;30m"
@@ -26,7 +26,7 @@ BLUE="\033[1;34m"
 PURPLE="\033[1;35m"
 CYAN="\033[1;36m"
 NONE="\033[0m"
-CLR_SCREEN="\033[2J\033[H"$CYAN""
+CLR_SCREEN="\033[2J\033[H"
 
 # generate by the command "figlet"
 echo "$CLR_SCREEN$CYAN\
@@ -130,6 +130,32 @@ install_metallb()
 	fi
 }
 
+install_dashboard()
+{
+	# install metrics-server
+	kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+	# install kubernetes dashboard
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+
+	# create token
+	if ! kubectl get secret -n kube-system | grep admin 2>/dev/null 1>&2 ; then
+		kubectl create -f ./srcs/yaml/admin-token.yaml
+	fi
+
+	# open dashboard
+	echo ""$GREEN$CLR_SCREEN"🛠  - Please do manually -"$NONE"\n"
+	echo "Do this command : "$YELLOW"\"kubectl proxy\""$NONE""
+	echo "Open a browser and use this url : "$YELLOW"\"http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/\"\n"$NONE""
+
+	# create admin token if necessary
+	echo ""$GREEN"🛠  - If the dashboard ask a token or kubeconfig file, Please do this manually -"$NONE"\n"
+	echo "Open a new terminal"
+	echo "Do this command : "$YELLOW"kubectl get secret -n kube-system | grep admin"$NONE""
+	echo "Copy just : "$YELLOW"\"admin-[...]\""$NONE""
+	echo "Do this command (replace [...] to your admin-[...]) : "$YELLOW"\"kubectl -n kube-system get secret [...] -o jsonpath={.data.token} | base64 -d\""$NONE""
+}
+
 ## INSTALLATION OF SERVICES
 setup_services()
 {
@@ -207,16 +233,8 @@ ft_services()
 	# setup services
 	setup_services
 
-	# show services
-	# echo ""$CLR_SCREEN$GREEN"show services ..."$NONE""
-	# minikube service list
-
 	# installation done
 	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""
-
-	# open minikube dashboard
-	# echo ""$GREEN"open dashboard ..."$NONE""
-	# minikube dashboard
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
@@ -250,6 +268,11 @@ elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
 elif [ $# -eq 1 ] && [ $1 = 'services' ] ; then
 
 	setup_services
+
+## INSTALL DASHBOARD
+elif [ $# -eq 1 ] && [ $1 = 'dashboard' ] ; then
+
+	install_dashboard
 
 ## UNINSTALL SERVICES
 elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
