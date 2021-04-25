@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/25 23:31:23 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/26 00:21:27 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -143,6 +143,8 @@ install_dashboard()
 		kubectl create -f ./srcs/yaml/admin-token.yaml
 	fi
 
+	# tuto https://jhooq.com/setting-up-kubernetes-dashboard/
+
 	# open dashboard
 	echo ""$GREEN$CLR_SCREEN"🛠  - Please do manually -"$NONE"\n"
 	echo "Do this command : "$YELLOW"\"kubectl proxy\""$NONE""
@@ -222,19 +224,14 @@ ft_services()
 		install_metallb >/dev/null
 	fi
 
-	# enable metrics-server plugin
-	# echo ""$GREEN"Enabling metrics-server ..."$NONE""
-	# minikube addons enable metrics-server
-
-	# enable dashboard plugin
-	# echo ""$GREEN"Enabling dashboard ..."$NONE""
-	# minikube addons enable dashboard
-
 	# setup services
 	setup_services
 
+	# set dashboard
+	# install_dashboard
+
 	# installation done
-	echo ""$YELLOW"\n✅ DONE ✅\n"$NONE""
+	echo ""$YELLOW"\n✅ INSTALLATION DONE ✅\n"$NONE""
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
