@@ -20,7 +20,10 @@ spec:
         imagePullPolicy: Never
         env:
           - name: WP_PASS
-            value: "wppass"
+            valueFrom:
+              secretKeyRef:
+                name: password
+                key: wppass
         ports:
         - containerPort: 5050
           name: wordpress-http
@@ -29,6 +32,9 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress
+  annotations:
+    # metallb.universe.tf/allow-shared-ip: <key> : use the same IP address for each service with the same key
+    metallb.universe.tf/allow-shared-ip: universal-ip
 spec:
   selector:
     app: wordpress

@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/26 18:18:56 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/26 20:46:22 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -138,9 +138,15 @@ install_dashboard()
 	# install kubernetes dashboard
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
 
+	# create admin token
+	if ! kubectl -n kube-system describe secret | grep admin-token 2>/dev/null 1>&2 ; then
+		echo ""$GREEN"\n🛠  create admin token ..."$NONE"\n"
+		kubectl create -f ./srcs/yaml/admin-token.yaml
+	fi
+
 	# show token
 	echo ""$GREEN$CLR_SCREEN"🛠  Plead copy the \"Token\" code to connect dashboard"$NONE"\n"
-	kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | awk '/^default-token-/{print $1}') | awk '$1=="token:"{print $2}'
+	kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | awk '/^admin-token-/{print $1}') | awk '$1=="token:"{print $2}'
 
 	# open dashboard
 	echo ""$GREEN"\n🛠  open the dashboard ..."$NONE"\n"
@@ -149,6 +155,9 @@ install_dashboard()
 	# starting dashboard proxy
 	echo ""$GREEN"🛠  Please refresh the dashboard page when you see \"Starting to serve on [...] ...\""$NONE"\n"
 	kubectl proxy
+
+	# TIPS 1 : if the dashboard page shows nothing, try add "login" like [...]/proxy/#/login.
+	# TIPS 2 : if you can't log in to the dashboard, try wipe off "login" like [...]/proxy/#/
 }
 
 ## INSTALLATION OF SERVICES
@@ -200,7 +209,7 @@ ft_services()
 		minikube start --vm-driver=virtualbox --memory=2g --cpus=2 --extra-config=apiserver.service-node-port-range=1-65535
 
 		if [ $? -ne 0 ] ; then
-			echo ""$RED"FAILED ! Try the command \"minikube delete\" and relaunch the script."$NONE""
+			echo ""$RED"❗️  FAILED ! Try the command \"minikube delete\" and relaunch the script."$NONE""
 			exit
 		fi
 	fi
@@ -214,9 +223,13 @@ ft_services()
 	if [ $? -ne 0 ] ; then
 
 		# install metallb with manifest
-		echo ""$GREEN"\ninstall & configure metallb ..."$NONE""
+		echo ""$GREEN"\n🛠  install & configure metallb ..."$NONE""
 		install_metallb >/dev/null
 	fi
+
+	# create secret for password
+	echo ""$GREEN"\n🛠  creat secret config ..."$NONE""
+	kubectl create -f ./srcs/yaml/secret.yaml
 
 	# setup services
 	setup_services
@@ -225,7 +238,7 @@ ft_services()
 	echo ""$YELLOW"\n✅ INSTALLATION DONE ✅\n"$NONE""
 
 	# set dashboard
-	# install_dashboard
+	install_dashboard
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
