@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/26 00:30:36 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/26 14:08:20 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,13 +85,15 @@ install_minikube_macos()
 			# linking minikube folder to goinfre
 			echo ""$GREEN"\n↔️  linking minikube folder to /goinfre/\$USER ..."$NONE""
 			echo "export MINIKUBE_HOME=/goinfre/$USER" >> $HOME/.zshrc
-			source $HOME/.zshrc
-		else
+		fi
+
+			# update config
+			echo ""$GREEN"\n⬆️  updating $HOME/.zshrc config ..."$NONE""
+			source $HOME/.zshrc 2>/dev/null 1>&2
 
 			# clean old minikube
 			echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
 			minikube delete
-		fi
 	else
 	
 		# clean old minikube
@@ -132,30 +134,20 @@ install_metallb()
 
 install_dashboard()
 {
-	# install metrics-server
-	kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
-
 	# install kubernetes dashboard
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
 
-	# create token
-	if ! kubectl get secret -n kube-system | grep admin 2>/dev/null 1>&2 ; then
-		kubectl create -f ./srcs/yaml/admin-token.yaml
-	fi
-
-	# tuto https://jhooq.com/setting-up-kubernetes-dashboard/
+	# show token
+	echo ""$GREEN$CLR_SCREEN"🛠  Plead copy the \"Token\" code to connect dashboard"$NONE"\n"
+	kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | awk '/^default-token-/{print $1}') | awk '$1=="token:"{print $2}'
 
 	# open dashboard
-	echo ""$GREEN$CLR_SCREEN"🛠  - Please do manually -"$NONE"\n"
-	echo "Do this command : "$YELLOW"\"kubectl proxy\""$NONE""
-	echo "Open a browser and use this url : "$YELLOW"\"http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/\"\n"$NONE""
+	echo ""$GREEN"🛠  open the dashboard ..."$NONE"\n"
+	open http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
 
-	# create admin token if necessary
-	echo ""$GREEN"🛠  - If the dashboard ask a token or kubeconfig file, Please do this manually -"$NONE"\n"
-	echo "Open a new terminal"
-	echo "Do this command : "$YELLOW"kubectl get secret -n kube-system | grep admin"$NONE""
-	echo "Copy just : "$YELLOW"\"admin-[...]\""$NONE""
-	echo "Do this command (replace [...] to your admin-[...]) : "$YELLOW"\"kubectl -n kube-system get secret [...] -o jsonpath={.data.token} | base64 -d\""$NONE""
+	# starting dashboard proxy
+	echo ""$GREEN"🛠  Please refresh the dashboard page when you see \"Starting to serve on [...] ...\""$NONE"\n"
+	kubectl proxy
 }
 
 ## INSTALLATION OF SERVICES
@@ -227,11 +219,11 @@ ft_services()
 	# setup services
 	setup_services
 
-	# set dashboard
-	# install_dashboard
-
 	# installation done
 	echo ""$YELLOW"\n✅ INSTALLATION DONE ✅\n"$NONE""
+
+	# set dashboard
+	# install_dashboard
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
 	zsh
@@ -251,7 +243,7 @@ elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
-			echo "♻️  Deleting $CYAN$service ...$NONE"
+			echo ""$CYAN"♻️  Deleting $service ...$NONE"
 			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
 		fi
 	done
@@ -278,42 +270,40 @@ elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
-			echo "♻️  Deleting $CYAN$service ...$NONE"
+			echo ""$CYAN"♻️  Deleting $service ...$NONE"
 			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
 		fi
 	done
 
 ## CLEAN ALL FILES
 elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
-	if [ $(uname) = "Linux" ] ; then
-
-		# delete minikube
-		if which minikube 2>/dev/null 1>&2 ; then
-			echo ""$CYAN"\n♻️  clean minikube ..."$NONE""
-			minikube delete
+		
+	# delete services
+	echo ""
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
+	do
+		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
+			echo ""$CYAN"♻️  Deleting $service ...$NONE"
+			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
 		fi
+	done
 
-		# delete minikube folder
-		echo ""$CYAN"\n♻️  clean minikube folder ..."$NONE""
-		rm -rf $HOME/.kube
-		rm -rf $HOME/.minikube
+	# delete minikube
+	if which minikube 2>/dev/null 1>&2 ; then
+		echo ""$CYAN"\n♻️  clean minikube ..."$NONE""
+		minikube delete
+	fi
 
-	elif [ $(uname) = "Darwin" ] ; then
+	# delete minikube folder
+	echo ""$CYAN"\n♻️  clean minikube folder ..."$NONE""
+	rm -rf $HOME/.kube
+	rm -rf $HOME/.minikube
 
-		# delete minikube
-		if which minikube 2>/dev/null 1>&2 ; then
-			echo ""$CYAN"\n♻️  clean minikube ..."$NONE""
-			minikube delete
-		fi
+	# delete minikube folder in goinfre (at 42)
+	if [ $(uname) = "Darwin" ] && [ -d /goinfre ] ; then
 
-		# delete minikube folder
-		echo ""$CYAN"\n♻️  clean minikube folder ..."$NONE""
-		rm -rf $HOME/.kube
-		rm -rf $HOME/.minikube
-
-		# delete minikube folder in goinfre (at 42)
-		if [ -d /goinfre ] ; then
-			rm -rf /goinfre/$USER/.minikube
-		fi
+		echo ""$CYAN"\n♻️  clean minikube folder in goinfre (at 42)..."$NONE""
+		unset MINIKUBE_HOME
+		rm -rf /goinfre/$USER/.minikube
 	fi
 fi
