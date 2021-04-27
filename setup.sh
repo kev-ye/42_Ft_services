@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/26 20:46:22 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/27 12:59:17 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 # ./setup.sh services		: intall services
 # ./setup.sh dashboard		: install dashboard
 # ./setup.sh delsvc			: uninstall services
-# ./setup.sh delete			: uninstall services & clean minikube config
+# ./setup.sh delete			: clean minikube
 # ./setup.sh clean_all		: clean all files
 
 ## ANSI COLOR CODES
@@ -136,11 +136,11 @@ install_metallb()
 install_dashboard()
 {
 	# install kubernetes dashboard
-	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml
+	kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.2.0/aio/deploy/recommended.yaml 2>/dev/null 1>&2
 
 	# create admin token
 	if ! kubectl -n kube-system describe secret | grep admin-token 2>/dev/null 1>&2 ; then
-		echo ""$GREEN"\n🛠  create admin token ..."$NONE"\n"
+		echo ""$GREEN"\n🛠  create admin token ..."$NONE"\n\n"
 		kubectl create -f ./srcs/yaml/admin-token.yaml
 	fi
 
@@ -156,7 +156,7 @@ install_dashboard()
 	echo ""$GREEN"🛠  Please refresh the dashboard page when you see \"Starting to serve on [...] ...\""$NONE"\n"
 	kubectl proxy
 
-	# TIPS 1 : if the dashboard page shows nothing, try add "login" like [...]/proxy/#/login.
+	# TIPS 1 : if the dashboard page shows nothing, try add "login" like [...]/proxy/#/login or just change browser
 	# TIPS 2 : if you can't log in to the dashboard, try wipe off "login" like [...]/proxy/#/
 }
 
@@ -167,10 +167,10 @@ setup_services()
 	echo ""
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
-		echo "🛠  Building $GREEN$service ...$NONE"
+		echo "🛠  Building $GREEN$service$NONE image ..."
 		docker build -t svc_$service ./srcs/config/$service 2>/dev/null 1>&2
 		if [ $? -ne 0 ] ; then
-			echo ""$RED"Error during building !$NONE"
+			echo ""$RED"Error during building image !$NONE"
 			exit
 		fi
 	done
@@ -178,10 +178,10 @@ setup_services()
 	echo ""
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
-		echo "🛠  Applicating $GREEN$service ...$NONE"
+		echo "🛠  Applicating $GREEN$service$NONE service ..."
 		kubectl apply -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
 		if [ $? -ne 0 ] ; then
-			echo ""$RED"Error during applicating !$NONE"
+			echo ""$RED"Error during applicating service !$NONE"
 			exit
 		fi
 	done
@@ -228,7 +228,7 @@ ft_services()
 	fi
 
 	# create secret for password
-	echo ""$GREEN"\n🛠  creat secret config ..."$NONE""
+	echo ""$GREEN"\n🛠  create secret config ..."$NONE""
 	kubectl create -f ./srcs/yaml/secret.yaml
 
 	# setup services
@@ -268,23 +268,23 @@ elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
-			echo ""$CYAN"♻️  Deleting $service ...$NONE"
+			echo ""$CYAN"♻️  Deleting $service service ...$NONE"
 			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
+		fi
+	done
+
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
+	do
+		if docker image ls | grep $service 2>/dev/null 1>&2 ; then
+			echo ""$CYAN"♻️  Deleting $service image ...$NONE"
+			docker image rm svc_$service 2>/dev/null 1>&2
 		fi
 	done
 
 ## DELETE SERVICES & MINIKUBE
 elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
 
-	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
-	do
-		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
-			echo ""$CYAN"♻️  Deleting $service ...$NONE"
-			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
-		fi
-	done
-
+	# delete minikube
 	if which minikube 2>/dev/null 1>&2 ; then
 		echo ""$CYAN"\n♻️  clean minikube ..."$NONE""
 		minikube delete
@@ -292,16 +292,6 @@ elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
 
 ## CLEAN ALL FILES
 elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
-		
-	# delete services
-	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
-	do
-		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
-			echo ""$CYAN"♻️  Deleting $service ...$NONE"
-			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
-		fi
-	done
 
 	# delete minikube
 	if which minikube 2>/dev/null 1>&2 ; then

@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:08:35 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 20:16:44 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/27 13:11:57 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ sed -i "s/WP_PASSWORD/$WP_PASS/g" /var/www/wordpress/wordpress/wp-config.php
 php -S 0.0.0.0:5050 -t /var/www/wordpress/wordpress
 
 # to keep the Container running
-tail -f /dev/null
+# tail -f /dev/null
+sleep infinite
 
 # debug
 # sh

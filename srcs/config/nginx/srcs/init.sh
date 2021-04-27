@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:09 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 17:42:09 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/27 13:05:18 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ service nginx start
 # service sshd restart 
 
 # to keep the Container running
-tail -f /dev/null
+# tail -f /dev/null
+sleep infinite
 
 # To run in foreground:
 # nginx -g 'daemon off;'

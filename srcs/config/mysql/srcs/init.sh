@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:41 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 20:17:33 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/27 13:11:36 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ echo "show databases" | mysql -u root | grep 'admin'
 # rc-service mariadb restart
 
 # to keep the Container running
-tail -f /dev/null
+# tail -f /dev/null
+sleep infinite
 
 # sh

@@ -1,14 +1,27 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
   name: mysql
   labels:
     app: mysql
 spec:
-  replicas: 1
+  type: ClusterIP
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+    name: mysql-http
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mysql
+spec:
   selector:
     matchLabels:
       app: mysql
+  serviceName: mysql
   template:
     metadata:
       labels:
@@ -19,24 +32,36 @@ spec:
         image: svc_mysql
         imagePullPolicy: Never
         env:
-          - name: WP_PASS
-            value: "wppass"
-          - name: ADMIN_PASS
-            value: "adminpass"
+        - name: WP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: password
+              key: wppass
+        - name: ADMIN_PASS
+          valueFrom:
+            secretKeyRef:
+              name: password
+              key: adminpass
         ports:
         - containerPort: 3306
           name: mysql-http
+        volumeMounts:
+        - name: mysql
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql
+        persistentVolumeClaim:
+          claimName: pvc-mysql
 ---
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 metadata:
-  name: mysql
-spec:
-  selector:
+  name: pvc-mysql
+  labels:
     app: mysql
-  type: LoadBalancer
-  ports:
-  - port: 3306
-    targetPort: 3306
-    nodePort: 3306
-    name: mysql-http
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

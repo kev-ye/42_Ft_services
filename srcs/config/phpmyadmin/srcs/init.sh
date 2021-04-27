@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/20 13:32:05 by kaye              #+#    #+#              #
-#    Updated: 2021/04/24 20:53:33 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/27 13:11:45 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ cp /APP/srcs/config.inc.php /var/www/phpmyadmin/phpmyadmin/config.inc.php
 php -S 0.0.0.0:5000 -t /var/www/phpmyadmin/phpmyadmin
 
 # to keep the Container running
-tail -f /dev/null
+# tail -f /dev/null
+sleep infinite
 
 # debug
 # sh
