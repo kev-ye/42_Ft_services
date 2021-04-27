@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/27 15:10:44 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/27 15:14:45 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ install_minikube_linux()
 	fi
 
 	# make sure docker is running
-	echo ""$GREEN"\n🐳  restart docker ..."$NONE""
+	echo ""$GREEN"\n🐳 restart docker ..."$NONE""
 	service docker restart
 	sleep 5
 
