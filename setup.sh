@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/27 12:59:17 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/27 15:10:44 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,9 +46,8 @@ echo "🖥  OS - "$PURPLE"$(uname)"$NONE" -"
 install_minikube_linux()
 {
 	## CONFIG FOR LINUX
-	echo ""$RED"\n(If you are in the VM, please check if you are running with 2 cores)\n"$NONE""
+	echo ""$RED"\n(If you are in the VM, please check if you are running with 2 cores)"$NONE""
 	cat /etc/group | grep "docker" | grep $(whoami) 2>/dev/null 1>&2
-
 	if [ $? -ne 0 ] ; then
 		# run docker without sudo
 		echo ""$RED"❗️Please do"$NONE" "$YELLOW"\"sudo usermod -aG docker $(whoami); newgrp docker\""$NONE""
@@ -56,7 +55,9 @@ install_minikube_linux()
 	fi
 
 	# make sure docker is running
+	echo ""$GREEN"\n🐳  restart docker ..."$NONE""
 	service docker restart
+	sleep 5
 
 	# clean old minikube
 	echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
@@ -150,7 +151,11 @@ install_dashboard()
 
 	# open dashboard
 	echo ""$GREEN"\n🛠  open the dashboard ..."$NONE"\n"
-	open http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+	if [ $(uname) = "Linux" ] ; then
+		xdg-open http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+	elif [ $(uname) = "Darwin" ] ; then
+		open http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+	fi
 
 	# starting dashboard proxy
 	echo ""$GREEN"🛠  Please refresh the dashboard page when you see \"Starting to serve on [...] ...\""$NONE"\n"
