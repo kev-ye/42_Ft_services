@@ -6,13 +6,13 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/28 14:43:38 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/28 21:28:44 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ## COMMAND TO RUN SCRIPT
 # ./setup.sh start/restart	: start
-# ./setup.sh services		: intall services
+# ./setup.sh services		: install services
 # ./setup.sh dashboard		: install dashboard
 # ./setup.sh delsvc			: uninstall services
 # ./setup.sh delete			: clean minikube
@@ -184,7 +184,7 @@ setup_services()
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		echo "🛠  Applicating $GREEN$service$NONE service ..."
-		kubectl apply -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
+		kubectl apply -f srcs/config/$service/$service-deployment.yaml 2>/dev/null 1>&2
 		if [ $? -ne 0 ] ; then
 			echo ""$RED"Error during applicating service !$NONE"
 			exit
@@ -274,10 +274,11 @@ elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 	do
 		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
 			echo ""$CYAN"♻️  Deleting $service service ...$NONE"
-			kubectl delete -f srcs/yaml/$service-deployment.yaml 2>/dev/null 1>&2
+			kubectl delete -f srcs/config/$service/$service-deployment.yaml 2>/dev/null 1>&2
 		fi
 	done
 
+	echo ""
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
 	do
 		if docker image ls | grep $service 2>/dev/null 1>&2 ; then

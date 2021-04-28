@@ -1,3 +1,24 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    dockerfile                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/04/28 19:50:37 by kaye              #+#    #+#              #
+#    Updated: 2021/04/28 21:28:55 by kaye             ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 FROM alpine:latest
 
+COPY . /APP
+WORKDIR /APP
+
+RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
+	&& apk update \
+	&& apk add --no-cache vsftpd
+
 EXPOSE 21
+
+CMD ["/bin/sh", "./srcs/init.sh"]

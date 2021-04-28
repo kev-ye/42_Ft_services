@@ -2,10 +2,10 @@
 -- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Hôte : mysql.default.svc.cluster.local
--- Généré le : mer. 28 avr. 2021 à 13:06
--- Version du serveur :  10.5.9-MariaDB
--- Version de PHP : 7.4.15
+-- 主机： mysql.default.svc.cluster.local
+-- 生成日期： 2021-04-28 18:28:42
+-- 服务器版本： 10.5.9-MariaDB
+-- PHP 版本： 7.4.15
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données : `wordpress`
+-- 数据库： `wordpress`
 --
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_commentmeta`
+-- 表的结构 `wp_commentmeta`
 --
 
 CREATE TABLE `wp_commentmeta` (
@@ -37,7 +37,7 @@ CREATE TABLE `wp_commentmeta` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_comments`
+-- 表的结构 `wp_comments`
 --
 
 CREATE TABLE `wp_comments` (
@@ -58,17 +58,10 @@ CREATE TABLE `wp_comments` (
   `user_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Déchargement des données de la table `wp_comments`
---
-
-INSERT INTO `wp_comments` (`comment_ID`, `comment_post_ID`, `comment_author`, `comment_author_email`, `comment_author_url`, `comment_author_IP`, `comment_date`, `comment_date_gmt`, `comment_content`, `comment_karma`, `comment_approved`, `comment_agent`, `comment_type`, `comment_parent`, `user_id`) VALUES
-(1, 1, 'A WordPress Commenter', 'wapuu@wordpress.example', 'https://wordpress.org/', '', '2021-04-28 13:04:28', '2021-04-28 13:04:28', 'Hi, this is a comment.\nTo get started with moderating, editing, and deleting comments, please visit the Comments screen in the dashboard.\nCommenter avatars come from <a href=\"https://gravatar.com\">Gravatar</a>.', 0, '1', '', 'comment', 0, 0);
-
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_links`
+-- 表的结构 `wp_links`
 --
 
 CREATE TABLE `wp_links` (
@@ -90,7 +83,7 @@ CREATE TABLE `wp_links` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_options`
+-- 表的结构 `wp_options`
 --
 
 CREATE TABLE `wp_options` (
@@ -101,7 +94,7 @@ CREATE TABLE `wp_options` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_options`
+-- 转存表中的数据 `wp_options`
 --
 
 INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`) VALUES
@@ -225,7 +218,7 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 (118, 'widget_tag_cloud', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
 (119, 'widget_nav_menu', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
 (120, 'widget_custom_html', 'a:1:{s:12:\"_multiwidget\";i:1;}', 'yes'),
-(121, '_transient_doing_cron', '1619615140.9294860363006591796875', 'yes'),
+(121, '_transient_doing_cron', '1619634433.8038010597229003906250', 'yes'),
 (122, 'auth_key', '<[MHK|4%FQ{/gxT-A3mnZet</UMVQ?Cy_)_YvwmGbHUGHfPTJ-&AE.N+T71aF]J3', 'no'),
 (123, 'auth_salt', 'DDtI-kVpj5`|ygWbjcuui/x|0ZyTaVXn471]kMXQ y%*d*X-G0PvWPjHBG5%<N<d', 'no'),
 (124, '_site_transient_update_core', 'O:8:\"stdClass\":3:{s:7:\"updates\";a:0:{}s:15:\"version_checked\";s:5:\"5.7.1\";s:12:\"last_checked\";i:1619615139;}', 'no'),
@@ -241,7 +234,7 @@ INSERT INTO `wp_options` (`option_id`, `option_name`, `option_value`, `autoload`
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_postmeta`
+-- 表的结构 `wp_postmeta`
 --
 
 CREATE TABLE `wp_postmeta` (
@@ -252,7 +245,7 @@ CREATE TABLE `wp_postmeta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_postmeta`
+-- 转存表中的数据 `wp_postmeta`
 --
 
 INSERT INTO `wp_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) VALUES
@@ -262,7 +255,7 @@ INSERT INTO `wp_postmeta` (`meta_id`, `post_id`, `meta_key`, `meta_value`) VALUE
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_posts`
+-- 表的结构 `wp_posts`
 --
 
 CREATE TABLE `wp_posts` (
@@ -292,11 +285,11 @@ CREATE TABLE `wp_posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_posts`
+-- 转存表中的数据 `wp_posts`
 --
 
 INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`) VALUES
-(1, 1, '2021-04-28 13:04:28', '2021-04-28 13:04:28', '<!-- wp:paragraph -->\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n<!-- /wp:paragraph -->', 'Hello world!', '', 'publish', 'open', 'open', '', 'hello-world', '', '', '2021-04-28 13:04:28', '2021-04-28 13:04:28', '', 0, 'http://192.168.99.100:5050/?p=1', 0, 'post', '', 1),
+(1, 1, '2021-04-28 13:04:28', '2021-04-28 13:04:28', '<!-- wp:paragraph -->\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n<!-- /wp:paragraph -->', 'Hello world!', '', 'publish', 'open', 'open', '', 'hello-world', '', '', '2021-04-28 13:04:28', '2021-04-28 13:04:28', '', 0, 'http://192.168.99.100:5050/?p=1', 0, 'post', '', 0),
 (2, 1, '2021-04-28 13:04:28', '2021-04-28 13:04:28', '<!-- wp:paragraph -->\n<p>This is an example page. It\'s different from a blog post because it will stay in one place and will show up in your site navigation (in most themes). Most people start with an About page that introduces them to potential site visitors. It might say something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>Hi there! I\'m a bike messenger by day, aspiring actor by night, and this is my website. I live in Los Angeles, have a great dog named Jack, and I like pi&#241;a coladas. (And gettin\' caught in the rain.)</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>...or something like this:</p>\n<!-- /wp:paragraph -->\n\n<!-- wp:quote -->\n<blockquote class=\"wp-block-quote\"><p>The XYZ Doohickey Company was founded in 1971, and has been providing quality doohickeys to the public ever since. Located in Gotham City, XYZ employs over 2,000 people and does all kinds of awesome things for the Gotham community.</p></blockquote>\n<!-- /wp:quote -->\n\n<!-- wp:paragraph -->\n<p>As a new WordPress user, you should go to <a href=\"http://192.168.99.100:5050/wp-admin/\">your dashboard</a> to delete this page and create new pages for your content. Have fun!</p>\n<!-- /wp:paragraph -->', 'Sample Page', '', 'publish', 'closed', 'open', '', 'sample-page', '', '', '2021-04-28 13:04:28', '2021-04-28 13:04:28', '', 0, 'http://192.168.99.100:5050/?page_id=2', 0, 'page', '', 0),
 (3, 1, '2021-04-28 13:04:28', '2021-04-28 13:04:28', '<!-- wp:heading --><h2>Who we are</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>Our website address is: http://192.168.99.100:5050.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Comments</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>When visitors leave comments on the site we collect the data shown in the comments form, and also the visitor&#8217;s IP address and browser user agent string to help spam detection.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>An anonymized string created from your email address (also called a hash) may be provided to the Gravatar service to see if you are using it. The Gravatar service privacy policy is available here: https://automattic.com/privacy/. After approval of your comment, your profile picture is visible to the public in the context of your comment.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Media</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>If you upload images to the website, you should avoid uploading images with embedded location data (EXIF GPS) included. Visitors to the website can download and extract any location data from images on the website.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Cookies</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>If you leave a comment on our site you may opt-in to saving your name, email address and website in cookies. These are for your convenience so that you do not have to fill in your details again when you leave another comment. These cookies will last for one year.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you visit our login page, we will set a temporary cookie to determine if your browser accepts cookies. This cookie contains no personal data and is discarded when you close your browser.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>When you log in, we will also set up several cookies to save your login information and your screen display choices. Login cookies last for two days, and screen options cookies last for a year. If you select &quot;Remember Me&quot;, your login will persist for two weeks. If you log out of your account, the login cookies will be removed.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you edit or publish an article, an additional cookie will be saved in your browser. This cookie includes no personal data and simply indicates the post ID of the article you just edited. It expires after 1 day.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Embedded content from other websites</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>Articles on this site may include embedded content (e.g. videos, images, articles, etc.). Embedded content from other websites behaves in the exact same way as if the visitor has visited the other website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>These websites may collect data about you, use cookies, embed additional third-party tracking, and monitor your interaction with that embedded content, including tracking your interaction with the embedded content if you have an account and are logged in to that website.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Who we share your data with</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>If you request a password reset, your IP address will be included in the reset email.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>How long we retain your data</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>If you leave a comment, the comment and its metadata are retained indefinitely. This is so we can recognize and approve any follow-up comments automatically instead of holding them in a moderation queue.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>For users that register on our website (if any), we also store the personal information they provide in their user profile. All users can see, edit, or delete their personal information at any time (except they cannot change their username). Website administrators can also see and edit that information.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>What rights you have over your data</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>If you have an account on this site, or have left comments, you can request to receive an exported file of the personal data we hold about you, including any data you have provided to us. You can also request that we erase any personal data we hold about you. This does not include any data we are obliged to keep for administrative, legal, or security purposes.</p><!-- /wp:paragraph --><!-- wp:heading --><h2>Where we send your data</h2><!-- /wp:heading --><!-- wp:paragraph --><p><strong class=\"privacy-policy-tutorial\">Suggested text: </strong>Visitor comments may be checked through an automated spam detection service.</p><!-- /wp:paragraph -->', 'Privacy Policy', '', 'draft', 'closed', 'open', '', 'privacy-policy', '', '', '2021-04-28 13:04:28', '2021-04-28 13:04:28', '', 0, 'http://192.168.99.100:5050/?page_id=3', 0, 'page', '', 0),
 (4, 1, '2021-04-28 13:05:39', '0000-00-00 00:00:00', '', 'Auto Draft', '', 'auto-draft', 'open', 'open', '', '', '', '', '2021-04-28 13:05:39', '0000-00-00 00:00:00', '', 0, 'http://192.168.99.100:5050/?p=4', 0, 'post', '', 0);
@@ -304,7 +297,7 @@ INSERT INTO `wp_posts` (`ID`, `post_author`, `post_date`, `post_date_gmt`, `post
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_termmeta`
+-- 表的结构 `wp_termmeta`
 --
 
 CREATE TABLE `wp_termmeta` (
@@ -317,7 +310,7 @@ CREATE TABLE `wp_termmeta` (
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_terms`
+-- 表的结构 `wp_terms`
 --
 
 CREATE TABLE `wp_terms` (
@@ -328,7 +321,7 @@ CREATE TABLE `wp_terms` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_terms`
+-- 转存表中的数据 `wp_terms`
 --
 
 INSERT INTO `wp_terms` (`term_id`, `name`, `slug`, `term_group`) VALUES
@@ -337,7 +330,7 @@ INSERT INTO `wp_terms` (`term_id`, `name`, `slug`, `term_group`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_term_relationships`
+-- 表的结构 `wp_term_relationships`
 --
 
 CREATE TABLE `wp_term_relationships` (
@@ -347,7 +340,7 @@ CREATE TABLE `wp_term_relationships` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_term_relationships`
+-- 转存表中的数据 `wp_term_relationships`
 --
 
 INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_order`) VALUES
@@ -356,7 +349,7 @@ INSERT INTO `wp_term_relationships` (`object_id`, `term_taxonomy_id`, `term_orde
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_term_taxonomy`
+-- 表的结构 `wp_term_taxonomy`
 --
 
 CREATE TABLE `wp_term_taxonomy` (
@@ -369,7 +362,7 @@ CREATE TABLE `wp_term_taxonomy` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_term_taxonomy`
+-- 转存表中的数据 `wp_term_taxonomy`
 --
 
 INSERT INTO `wp_term_taxonomy` (`term_taxonomy_id`, `term_id`, `taxonomy`, `description`, `parent`, `count`) VALUES
@@ -378,7 +371,7 @@ INSERT INTO `wp_term_taxonomy` (`term_taxonomy_id`, `term_id`, `taxonomy`, `desc
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_usermeta`
+-- 表的结构 `wp_usermeta`
 --
 
 CREATE TABLE `wp_usermeta` (
@@ -389,7 +382,7 @@ CREATE TABLE `wp_usermeta` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_usermeta`
+-- 转存表中的数据 `wp_usermeta`
 --
 
 INSERT INTO `wp_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALUES
@@ -409,12 +402,40 @@ INSERT INTO `wp_usermeta` (`umeta_id`, `user_id`, `meta_key`, `meta_value`) VALU
 (14, 1, 'dismissed_wp_pointers', ''),
 (15, 1, 'show_welcome_panel', '1'),
 (16, 1, 'session_tokens', 'a:1:{s:64:\"25a53f742585536430e1a34c3ba69a100a83900c2abe54534c98f19664f944da\";a:4:{s:10:\"expiration\";i:1619787939;s:2:\"ip\";s:10:\"172.17.0.1\";s:2:\"ua\";s:120:\"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36\";s:5:\"login\";i:1619615139;}}'),
-(17, 1, 'wp_dashboard_quick_press_last_post_id', '4');
+(17, 1, 'wp_dashboard_quick_press_last_post_id', '4'),
+(18, 2, 'nickname', 'user1'),
+(19, 2, 'first_name', 'user1'),
+(20, 2, 'last_name', 'user1'),
+(21, 2, 'description', ''),
+(22, 2, 'rich_editing', 'true'),
+(23, 2, 'syntax_highlighting', 'true'),
+(24, 2, 'comment_shortcuts', 'false'),
+(25, 2, 'admin_color', 'fresh'),
+(26, 2, 'use_ssl', '0'),
+(27, 2, 'show_admin_bar_front', 'true'),
+(28, 2, 'locale', ''),
+(29, 2, 'wp_capabilities', 'a:1:{s:10:\"subscriber\";b:1;}'),
+(30, 2, 'wp_user_level', '0'),
+(31, 2, 'dismissed_wp_pointers', ''),
+(32, 3, 'nickname', 'user2'),
+(33, 3, 'first_name', 'user2'),
+(34, 3, 'last_name', 'user2'),
+(35, 3, 'description', ''),
+(36, 3, 'rich_editing', 'true'),
+(37, 3, 'syntax_highlighting', 'true'),
+(38, 3, 'comment_shortcuts', 'false'),
+(39, 3, 'admin_color', 'fresh'),
+(40, 3, 'use_ssl', '0'),
+(41, 3, 'show_admin_bar_front', 'true'),
+(42, 3, 'locale', ''),
+(43, 3, 'wp_capabilities', 'a:1:{s:10:\"subscriber\";b:1;}'),
+(44, 3, 'wp_user_level', '0'),
+(45, 3, 'dismissed_wp_pointers', '');
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `wp_users`
+-- 表的结构 `wp_users`
 --
 
 CREATE TABLE `wp_users` (
@@ -431,18 +452,20 @@ CREATE TABLE `wp_users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Déchargement des données de la table `wp_users`
+-- 转存表中的数据 `wp_users`
 --
 
 INSERT INTO `wp_users` (`ID`, `user_login`, `user_pass`, `user_nicename`, `user_email`, `user_url`, `user_registered`, `user_activation_key`, `user_status`, `display_name`) VALUES
-(1, 'wordpress', '$P$BPuU/revSAvotdu8yexKMV2IbjdYkS/', 'wordpress', 'wordpress@wordpress.com', 'http://192.168.99.100:5050', '2021-04-28 13:04:27', '', 0, 'wordpress');
+(1, 'wordpress', '$P$BPuU/revSAvotdu8yexKMV2IbjdYkS/', 'wordpress', 'wordpress@wordpress.com', 'http://192.168.99.100:5050', '2021-04-28 13:04:27', '', 0, 'wordpress'),
+(2, 'user1', '$P$BPCkpyZDUTMAOpJ3i1tPRxJrAyD/gj1', 'user1', 'user1@wordpress.com', '', '2021-04-28 18:25:12', '', 0, 'user1 user1'),
+(3, 'user2', '$P$BH0DMqMc5cIXFuKWqXZ1vJKaAfjh3S/', 'user2', 'user2@wordpress.com', '', '2021-04-28 18:25:44', '', 0, 'user2 user2');
 
 --
--- Index pour les tables déchargées
+-- 转储表的索引
 --
 
 --
--- Index pour la table `wp_commentmeta`
+-- 表的索引 `wp_commentmeta`
 --
 ALTER TABLE `wp_commentmeta`
   ADD PRIMARY KEY (`meta_id`),
@@ -450,7 +473,7 @@ ALTER TABLE `wp_commentmeta`
   ADD KEY `meta_key` (`meta_key`(191));
 
 --
--- Index pour la table `wp_comments`
+-- 表的索引 `wp_comments`
 --
 ALTER TABLE `wp_comments`
   ADD PRIMARY KEY (`comment_ID`),
@@ -461,14 +484,14 @@ ALTER TABLE `wp_comments`
   ADD KEY `comment_author_email` (`comment_author_email`(10));
 
 --
--- Index pour la table `wp_links`
+-- 表的索引 `wp_links`
 --
 ALTER TABLE `wp_links`
   ADD PRIMARY KEY (`link_id`),
   ADD KEY `link_visible` (`link_visible`);
 
 --
--- Index pour la table `wp_options`
+-- 表的索引 `wp_options`
 --
 ALTER TABLE `wp_options`
   ADD PRIMARY KEY (`option_id`),
@@ -476,7 +499,7 @@ ALTER TABLE `wp_options`
   ADD KEY `autoload` (`autoload`);
 
 --
--- Index pour la table `wp_postmeta`
+-- 表的索引 `wp_postmeta`
 --
 ALTER TABLE `wp_postmeta`
   ADD PRIMARY KEY (`meta_id`),
@@ -484,7 +507,7 @@ ALTER TABLE `wp_postmeta`
   ADD KEY `meta_key` (`meta_key`(191));
 
 --
--- Index pour la table `wp_posts`
+-- 表的索引 `wp_posts`
 --
 ALTER TABLE `wp_posts`
   ADD PRIMARY KEY (`ID`),
@@ -494,7 +517,7 @@ ALTER TABLE `wp_posts`
   ADD KEY `post_author` (`post_author`);
 
 --
--- Index pour la table `wp_termmeta`
+-- 表的索引 `wp_termmeta`
 --
 ALTER TABLE `wp_termmeta`
   ADD PRIMARY KEY (`meta_id`),
@@ -502,7 +525,7 @@ ALTER TABLE `wp_termmeta`
   ADD KEY `meta_key` (`meta_key`(191));
 
 --
--- Index pour la table `wp_terms`
+-- 表的索引 `wp_terms`
 --
 ALTER TABLE `wp_terms`
   ADD PRIMARY KEY (`term_id`),
@@ -510,14 +533,14 @@ ALTER TABLE `wp_terms`
   ADD KEY `name` (`name`(191));
 
 --
--- Index pour la table `wp_term_relationships`
+-- 表的索引 `wp_term_relationships`
 --
 ALTER TABLE `wp_term_relationships`
   ADD PRIMARY KEY (`object_id`,`term_taxonomy_id`),
   ADD KEY `term_taxonomy_id` (`term_taxonomy_id`);
 
 --
--- Index pour la table `wp_term_taxonomy`
+-- 表的索引 `wp_term_taxonomy`
 --
 ALTER TABLE `wp_term_taxonomy`
   ADD PRIMARY KEY (`term_taxonomy_id`),
@@ -525,7 +548,7 @@ ALTER TABLE `wp_term_taxonomy`
   ADD KEY `taxonomy` (`taxonomy`);
 
 --
--- Index pour la table `wp_usermeta`
+-- 表的索引 `wp_usermeta`
 --
 ALTER TABLE `wp_usermeta`
   ADD PRIMARY KEY (`umeta_id`),
@@ -533,7 +556,7 @@ ALTER TABLE `wp_usermeta`
   ADD KEY `meta_key` (`meta_key`(191));
 
 --
--- Index pour la table `wp_users`
+-- 表的索引 `wp_users`
 --
 ALTER TABLE `wp_users`
   ADD PRIMARY KEY (`ID`),
@@ -542,74 +565,74 @@ ALTER TABLE `wp_users`
   ADD KEY `user_email` (`user_email`);
 
 --
--- AUTO_INCREMENT pour les tables déchargées
+-- 在导出的表使用AUTO_INCREMENT
 --
 
 --
--- AUTO_INCREMENT pour la table `wp_commentmeta`
+-- 使用表AUTO_INCREMENT `wp_commentmeta`
 --
 ALTER TABLE `wp_commentmeta`
-  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `wp_comments`
+-- 使用表AUTO_INCREMENT `wp_comments`
 --
 ALTER TABLE `wp_comments`
   MODIFY `comment_ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT pour la table `wp_links`
+-- 使用表AUTO_INCREMENT `wp_links`
 --
 ALTER TABLE `wp_links`
   MODIFY `link_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `wp_options`
+-- 使用表AUTO_INCREMENT `wp_options`
 --
 ALTER TABLE `wp_options`
   MODIFY `option_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
--- AUTO_INCREMENT pour la table `wp_postmeta`
+-- 使用表AUTO_INCREMENT `wp_postmeta`
 --
 ALTER TABLE `wp_postmeta`
   MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `wp_posts`
+-- 使用表AUTO_INCREMENT `wp_posts`
 --
 ALTER TABLE `wp_posts`
   MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT pour la table `wp_termmeta`
+-- 使用表AUTO_INCREMENT `wp_termmeta`
 --
 ALTER TABLE `wp_termmeta`
   MODIFY `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT pour la table `wp_terms`
+-- 使用表AUTO_INCREMENT `wp_terms`
 --
 ALTER TABLE `wp_terms`
   MODIFY `term_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT pour la table `wp_term_taxonomy`
+-- 使用表AUTO_INCREMENT `wp_term_taxonomy`
 --
 ALTER TABLE `wp_term_taxonomy`
   MODIFY `term_taxonomy_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT pour la table `wp_usermeta`
+-- 使用表AUTO_INCREMENT `wp_usermeta`
 --
 ALTER TABLE `wp_usermeta`
-  MODIFY `umeta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `umeta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
--- AUTO_INCREMENT pour la table `wp_users`
+-- 使用表AUTO_INCREMENT `wp_users`
 --
 ALTER TABLE `wp_users`
-  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

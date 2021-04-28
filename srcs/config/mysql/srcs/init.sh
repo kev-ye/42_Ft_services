@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:41 by kaye              #+#    #+#              #
-#    Updated: 2021/04/28 14:47:58 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/28 20:44:42 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ echo "create user 'admin'@'%' IDENTIFIED BY '$ADMIN_PASS';" | mysql -u root
 echo "grant all privileges on *.* to 'admin'@'%' with grant option;" | mysql -u root
 echo "flush privileges" | mysql -u root
 
-# mysql -u root "wordpress" < /APP/srcs/wordpress.sql
+mysql -u root "wordpress" < /APP/srcs/wordpress.sql
 
 # Check database and grants #
 echo "show databases" | mysql -u root | grep 'wordpress'

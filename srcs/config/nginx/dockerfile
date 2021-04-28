@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:27 by kaye              #+#    #+#              #
-#    Updated: 2021/04/28 11:51:41 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/28 20:58:08 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,9 @@ WORKDIR /APP
 
 VOLUME /sys/fs/cgroup
 
-# insall nginx openrc openssl openssh using apk add
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
-	apk update && apk add --no-cache nginx openrc openssl openssh
+	&& apk update \
+	&& apk add --no-cache nginx openrc openssl openssh
 
 # configure ssh
 RUN sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config && \
