@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:41 by kaye              #+#    #+#              #
-#    Updated: 2021/04/28 20:44:42 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/28 21:33:05 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,10 +40,6 @@ mysql -u root "wordpress" < /APP/srcs/wordpress.sql
 # Check database and grants #
 echo "show databases" | mysql -u root | grep 'wordpress'
 echo "show databases" | mysql -u root | grep 'admin'
-
-# # resolve "access denied for user" problem
-# sed -i 's/\[mysqld\]/&\nskip-grant-tables/' /etc/my.cnf
-# rc-service mariadb restart
 
 # to keep the Container running
 # tail -f /dev/null
