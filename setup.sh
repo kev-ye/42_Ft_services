@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/27 15:14:45 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/28 14:43:38 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@
 # ./setup.sh dashboard		: install dashboard
 # ./setup.sh delsvc			: uninstall services
 # ./setup.sh delete			: clean minikube
-# ./setup.sh clean_all		: clean all files
+# ./setup.sh clean_all		: clean all files about ft_services
 
 ## ANSI COLOR CODES
 BLACK="\033[1;30m"
@@ -229,7 +229,7 @@ ft_services()
 
 		# install metallb with manifest
 		echo ""$GREEN"\n🛠  install & configure metallb ..."$NONE""
-		install_metallb >/dev/null
+		install_metallb 2>/dev/null 1>&2
 	fi
 
 	# create secret for password
@@ -295,7 +295,7 @@ elif [ $# -eq 1 ] && [ $1 = 'delete' ] ; then
 		minikube delete
 	fi
 
-## CLEAN ALL FILES
+## CLEAN ALL FILES ABOUT FT_SERVICES
 elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
 
 	# delete minikube
@@ -316,4 +316,8 @@ elif [ $# -eq 1 ] && [ $1 = 'clean_all' ] ; then
 		unset MINIKUBE_HOME
 		rm -rf /goinfre/$USER/.minikube
 	fi
+
+	# delete ssh
+	echo ""$CYAN"\n♻️  clean ssh ..."$NONE""
+	rm -rf $HOME/.ssh/known_hosts
 fi

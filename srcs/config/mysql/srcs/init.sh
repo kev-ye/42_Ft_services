@@ -6,11 +6,11 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:41 by kaye              #+#    #+#              #
-#    Updated: 2021/04/27 13:11:36 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/28 14:47:58 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# check database accessible : mysql -h["IP address"] -P["PORT"] -u["USER"] -p["PASSWORD"] ["DATABSE"]
+# TIPS : check database accessible : mysql -h["IP address"] -P["PORT"] -u["USER"] -p["PASSWORD"] ["DATABSE"]
 
 # init
 openrc
@@ -35,6 +35,8 @@ echo "create user 'admin'@'%' IDENTIFIED BY '$ADMIN_PASS';" | mysql -u root
 echo "grant all privileges on *.* to 'admin'@'%' with grant option;" | mysql -u root
 echo "flush privileges" | mysql -u root
 
+# mysql -u root "wordpress" < /APP/srcs/wordpress.sql
+
 # Check database and grants #
 echo "show databases" | mysql -u root | grep 'wordpress'
 echo "show databases" | mysql -u root | grep 'admin'
@@ -46,5 +48,3 @@ echo "show databases" | mysql -u root | grep 'admin'
 # to keep the Container running
 # tail -f /dev/null
 sleep infinite
-
-# sh
