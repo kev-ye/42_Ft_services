@@ -19,14 +19,19 @@ spec:
         image: svc_wordpress
         imagePullPolicy: Never
         env:
-          - name: WP_PASS
-            valueFrom:
-              secretKeyRef:
-                name: password
-                key: wppass
+        - name: WP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: password
+              key: wppass
         ports:
         - containerPort: 5050
           name: wordpress-http
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /APP/srcs/livenessprobe.sh
 ---
 apiVersion: v1
 kind: Service

@@ -25,6 +25,11 @@ spec:
           name: nginx-https
         - containerPort: 22
           name: nginx-ssh
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /APP/srcs/livenessprobe.sh
 ---
 apiVersion: v1
 kind: Service
