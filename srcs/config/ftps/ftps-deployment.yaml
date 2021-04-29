@@ -1,53 +1,74 @@
-apiVersion: apps/v1beta1 # for versions before 1.6.0 use extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ftps
+  labels:
+    app: ftps
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: ftps
   template:
     metadata:
       labels:
         app: ftps
     spec:
-      volumes:
-      - name: ftps
-        persistentVolumeClaim:
-          claimName: ftps-pv-claim
       containers:
-      - name: ftps-container
+      - name: ftps
         image: svc_ftps
         imagePullPolicy: Never
         ports:
         - containerPort: 21
-          protocol: TCP
-          name: ftps-port
-        volumeMounts:
-        - mountPath: "/home/vsftpd"
-          name: ftps
-        env:
-        - name: FTP_USER
-          value: "user"
-        - name: FTP_PASS
-          value: "userpass"
-        #- name: PASV_ADDRESS
-        #  value: "127.0.0.1"
-        #- name: PASV_MIN_PORT
-        #  value: "21100"
-        #- name: PASV_MAX_PORT
-        #  value: "21110"
+        - containerPort: 21
+        - containerPort: 30000
+        - containerPort: 30001
+        - containerPort: 30002
+        - containerPort: 30003
+        - containerPort: 30004
+        - containerPort: 30005
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: ftps
   annotations:
+    # metallb.universe.tf/allow-shared-ip: <key> : use the same IP address for each service with the same key
     metallb.universe.tf/allow-shared-ip: universal-ip
 spec:
-  type: LoadBalancer
   selector:
     app: ftps
+  type: LoadBalancer
   ports:
-  - name: ftps
-    protocol: TCP
-    port: 21
+  - port: 20
+    targetPort: 20
+    nodePort: 20
+    name: ftps-port-20
+  - port: 21
     targetPort: 21
+    nodePort: 21
+    name: ftps-port-21
+  - port: 30000
+    targetPort: 30000
+    nodePort: 30000
+    name: ftps-pasif-port
+  - port: 30001
+    targetPort: 30001
+    nodePort: 30001
+    name: ftps-pasif-port
+  - port: 30002
+    targetPort: 30002
+    nodePort: 30002
+    name: ftps-pasif-port
+  - port: 30003
+    targetPort: 30003
+    nodePort: 30003
+    name: ftps-pasif-port
+  - port: 30004
+    targetPort: 30004
+    nodePort: 30004
+    name: ftps-pasif-port
+  - port: 30005
+    targetPort: 30005
+    nodePort: 30005
+    name: ftps-pasif-port

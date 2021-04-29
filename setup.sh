@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/28 21:37:50 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/29 11:18:42 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -246,7 +246,7 @@ ft_services()
 	install_dashboard
 
 	# reopen a new zsh because configuration of source ~/.zshrc isn't applicate on old zsh.
-	zsh
+	# zsh
 }
 
 ### SCRIPT
