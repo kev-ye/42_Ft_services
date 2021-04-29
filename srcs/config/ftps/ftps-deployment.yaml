@@ -51,24 +51,24 @@ spec:
   - port: 30000
     targetPort: 30000
     nodePort: 30000
-    name: ftps-pasif-port
+    name: ftps-pasif-port-30000
   - port: 30001
     targetPort: 30001
     nodePort: 30001
-    name: ftps-pasif-port
+    name: ftps-pasif-port-30001
   - port: 30002
     targetPort: 30002
     nodePort: 30002
-    name: ftps-pasif-port
+    name: ftps-pasif-port-30002
   - port: 30003
     targetPort: 30003
     nodePort: 30003
-    name: ftps-pasif-port
+    name: ftps-pasif-port-30003
   - port: 30004
     targetPort: 30004
     nodePort: 30004
-    name: ftps-pasif-port
+    name: ftps-pasif-port-30004
   - port: 30005
     targetPort: 30005
     nodePort: 30005
-    name: ftps-pasif-port
+    name: ftps-pasif-port--30005
