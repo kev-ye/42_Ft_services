@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/28 19:51:58 by kaye              #+#    #+#              #
-#    Updated: 2021/04/29 15:08:32 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/29 19:28:22 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,4 +19,4 @@ touch /run/openrc/softlevel
 
 # to keep the Container running
 # tail -f /dev/null
-sleep infinite
+# sleep infinite

@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/28 19:50:37 by kaye              #+#    #+#              #
-#    Updated: 2021/04/29 15:33:53 by kaye             ###   ########.fr        #
+#    Updated: 2021/04/29 19:28:46 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,6 +35,6 @@ RUN adduser -D "admin" \
 RUN mv /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.duplicate \
 	&& cp ./srcs/vsftpd.conf /etc/vsftpd/
 
-EXPOSE 21 20 20000 20001 20002 20003 20004 20005
+EXPOSE 20 21 20000 20001 20002 20003 20004 20005
 
 CMD ["/bin/sh", "./srcs/init.sh"]
