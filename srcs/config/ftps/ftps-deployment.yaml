@@ -19,7 +19,7 @@ spec:
         image: svc_ftps
         imagePullPolicy: Never
         ports:
-        - containerPort: 21
+        - containerPort: 20
         - containerPort: 21
         - containerPort: 30000
         - containerPort: 30001
