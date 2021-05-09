@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/28 21:35:24 by kaye              #+#    #+#              #
-#    Updated: 2021/05/09 15:22:14 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/09 16:46:05 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,10 @@ openrc
 touch /run/openrc/softlevel
 
 # run grafana
-# grafana-server
-# grafana-server --homepath=/usr/share/grafana
+grafana-server --homepath=/usr/share/grafana
+
+# run telegraf
+service telegraf restart
 
 # to keep the Container running
 # tail -f /dev/null

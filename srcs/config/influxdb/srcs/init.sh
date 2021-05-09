@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/28 21:35:30 by kaye              #+#    #+#              #
-#    Updated: 2021/05/09 15:42:25 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/09 16:45:17 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,14 @@
 openrc
 touch /run/openrc/softlevel
 
-#run influxdb
+# run influxdb
 service influxdb start
 
-# create teklegraf database
+# create telegraf database
 echo "create database telegraf" | influx
+
+# run telegraf
+service telegraf restart
 
 # to keep the Container running
 # tail -f /dev/null

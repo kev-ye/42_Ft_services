@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/05/09 14:49:51 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/09 16:53:32 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -168,9 +168,8 @@ install_dashboard()
 ## INSTALLATION OF SERVICES
 setup_services()
 {
-	# for service in 'nginx' 'mysql' 'influxdb' 'wordpress' 'phpmyadmin' 'ftps' 'grafana'
 	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps'
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 'influxdb'
 	do
 		echo "🛠  Building $GREEN$service$NONE image ..."
 		docker build -t svc_$service ./srcs/config/$service 2>/dev/null 1>&2
@@ -181,7 +180,7 @@ setup_services()
 	done
 
 	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps'
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 'influxdb'
 	do
 		echo "🛠  Applicating $GREEN$service$NONE service ..."
 		kubectl apply -f srcs/config/$service/$service-deployment.yaml 2>/dev/null 1>&2
@@ -270,7 +269,7 @@ elif [ $# -eq 1 ] && [ $1 = 'dashboard' ] ; then
 elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 
 	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana'
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 'influxdb'
 	do
 		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
 			echo ""$CYAN"♻️  Deleting $service service ...$NONE"
@@ -279,7 +278,7 @@ elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 	done
 
 	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana'
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 'influxdb'
 	do
 		if docker image ls | grep $service 2>/dev/null 1>&2 ; then
 			echo ""$CYAN"♻️  Deleting $service image ...$NONE"
