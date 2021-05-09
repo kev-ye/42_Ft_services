@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:27 by kaye              #+#    #+#              #
-#    Updated: 2021/04/29 12:22:57 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/09 15:20:40 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ VOLUME /sys/fs/cgroup
 
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk update \
-	&& apk add --no-cache nginx openrc openssl openssh
+	&& apk add --no-cache nginx openrc openssl openssh telegraf
 
 # configure ssh
 RUN sed -i "s/#PermitRootLogin.*/PermitRootLogin yes/g" /etc/ssh/sshd_config && \

@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/04/29 21:27:51 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/09 14:49:51 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -270,7 +270,7 @@ elif [ $# -eq 1 ] && [ $1 = 'dashboard' ] ; then
 elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 
 	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps'
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana'
 	do
 		if kubectl get svc | grep $service 2>/dev/null 1>&2 ; then
 			echo ""$CYAN"♻️  Deleting $service service ...$NONE"
@@ -279,7 +279,7 @@ elif [ $# -eq 1 ] && [ $1 = 'delsvc' ] ; then
 	done
 
 	echo ""
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps'
+	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana'
 	do
 		if docker image ls | grep $service 2>/dev/null 1>&2 ; then
 			echo ""$CYAN"♻️  Deleting $service image ...$NONE"

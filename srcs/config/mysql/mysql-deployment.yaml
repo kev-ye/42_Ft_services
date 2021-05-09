@@ -45,6 +45,11 @@ spec:
         ports:
         - containerPort: 3306
           name: mysql-http
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /APP/srcs/livenessprobe.sh
         volumeMounts:
         - name: mysql
           mountPath: /var/lib/mysql
