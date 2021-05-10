@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/28 21:33:35 by kaye              #+#    #+#              #
-#    Updated: 2021/05/09 15:34:00 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/10 14:37:04 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,11 +15,14 @@ FROM alpine:latest
 COPY . /APP
 WORKDIR /APP
 
-VOLUME /sys/fs/cgroup
+# VOLUME /sys/fs/cgroup
 
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk update \
 	&& apk add --no-cache influxdb openrc telegraf
+
+# config telegraf
+RUN mv /APP/srcs/telegraf.conf /etc/telegraf.conf.d/telegraf.conf
 
 EXPOSE 8086
 

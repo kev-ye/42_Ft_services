@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:08:46 by kaye              #+#    #+#              #
-#    Updated: 2021/05/09 15:20:12 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/10 14:36:32 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ FROM alpine:latest
 COPY . /APP
 WORKDIR /APP
 
-VOLUME /sys/fs/cgroup
+# VOLUME /sys/fs/cgroup
 
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk update \
@@ -32,6 +32,9 @@ RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& tar -xzvf /var/www/wordpress/latest.tar.gz -C /var/www/wordpress/ \
 	&& rm /var/www/wordpress/latest.tar.gz \
 	&& mv /APP/srcs/wp-config.php /var/www/wordpress/wordpress/
+
+# config telegraf
+RUN mv /APP/srcs/telegraf.conf /etc/telegraf.conf.d/telegraf.conf
 
 EXPOSE 5050
 

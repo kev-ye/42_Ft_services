@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/28 21:35:30 by kaye              #+#    #+#              #
-#    Updated: 2021/05/09 16:45:17 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/10 14:39:54 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,13 @@ touch /run/openrc/softlevel
 service influxdb start
 
 # create telegraf database
-echo "create database telegraf" | influx
+echo "create database ftps" | influx
+echo "create database grafana" | influx
+echo "create database influxdb" | influx
+echo "create database mysql" | influx
+echo "create database nginx" | influx
+echo "create database phpmyadmin" | influx
+echo "create database wordpress" | influx
 
 # run telegraf
 service telegraf restart
