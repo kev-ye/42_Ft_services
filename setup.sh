@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/05 09:58:40 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 19:36:12 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 19:59:51 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -174,8 +174,7 @@ setup_services()
 	# sleep 5
 
 	echo ""
-	# for service in 'influxdb' 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
+	for service in 'influxdb' 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 
 	do
 		echo "🛠  Building $GREEN$service$NONE image ..."
 		docker build -t svc_$service ./srcs/config/$service 2>/dev/null 1>&2
@@ -186,8 +185,7 @@ setup_services()
 	done
 
 	echo ""
-	# for service in 'influxdb' 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 
-	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress'
+	for service in 'influxdb' 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 
 	do
 		echo "🛠  Applicating $GREEN$service$NONE service ..."
 		kubectl apply -f srcs/config/$service/$service-deployment.yaml 2>/dev/null 1>&2
