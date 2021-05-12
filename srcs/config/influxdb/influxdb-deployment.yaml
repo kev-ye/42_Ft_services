@@ -31,25 +31,14 @@ spec:
       - name: influxdb
         image: svc_influxdb
         imagePullPolicy: Never
-        # env:
-        # - name: WP_PASS
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: password
-        #       key: wppass
-        # - name: ADMIN_PASS
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: password
-        #       key: adminpass
         ports:
         - containerPort: 8086
           name: influxdb-port
-        # livenessProbe:
-        #   exec:
-        #     command:
-        #       - sh
-        #       - /APP/srcs/livenessprobe.sh
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /APP/srcs/livenessprobe.sh
         volumeMounts:
         - name: influxdb
           mountPath: /var/lib/influxdb

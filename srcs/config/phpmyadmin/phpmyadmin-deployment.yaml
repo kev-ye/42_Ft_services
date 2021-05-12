@@ -21,6 +21,11 @@ spec:
         ports:
         - containerPort: 5000
           name: phpmyadmin-http
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /APP/srcs/livenessprobe.sh
 ---
 apiVersion: v1
 kind: Service

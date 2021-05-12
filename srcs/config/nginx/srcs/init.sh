@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:09 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 12:52:58 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 19:04:29 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,6 @@ service sshd start
 telegraf &
 
 # run nginx
-# service nginx start
 nginx -g 'daemon off;'
 
 # to keep the Container running

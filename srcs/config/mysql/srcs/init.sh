@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:41 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 14:02:13 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 19:14:22 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,8 +25,6 @@ sed -i 's/#bind-address/bind-address/g' /etc/my.cnf.d/mariadb-server.cnf
 
 # start mariadb
 rc-service mariadb start
-
-sleep 5
 
 # Configure wordpress database & admin database
 echo "create database wordpress;" | mysql -u root

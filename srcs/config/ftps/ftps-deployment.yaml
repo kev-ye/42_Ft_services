@@ -27,6 +27,11 @@ spec:
         - containerPort: 20003
         - containerPort: 20004
         - containerPort: 20005
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /APP/srcs/livenessprobe.sh
 ---
 apiVersion: v1
 kind: Service

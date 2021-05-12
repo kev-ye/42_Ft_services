@@ -1,32 +1,15 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    dockerfile                                         :+:      :+:    :+:    #
+#    livenessprobe.sh                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/05/11 10:43:48 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 14:32:16 by kaye             ###   ########.fr        #
+#    Created: 2021/05/09 14:42:02 by kaye              #+#    #+#              #
+#    Updated: 2021/05/12 19:17:28 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM alpine:latest
-
-COPY . /APP
-WORKDIR /APP
-
-# VOLUME /sys/fs/cgroup
-
-RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
-	&& apk update \
-	&& apk add --no-cache telegraf openrc wget
-
-RUN mv /APP/srcs/telegraf.conf /etc/telegraf.conf.d
-
-# telegraf config
-RUN mkdir /etc/telegraf/
-ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
-
-EXPOSE 8125
-
-CMD ["/bin/sh", "./srcs/init.sh"]
+if ! pidof telegraf ; then
+	telegraf &
+fi

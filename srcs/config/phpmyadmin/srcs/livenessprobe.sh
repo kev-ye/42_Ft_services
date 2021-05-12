@@ -1,22 +1,19 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    init.sh                                            :+:      :+:    :+:    #
+#    livenessprobe.sh                                   :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/05/11 10:46:28 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 12:53:16 by kaye             ###   ########.fr        #
+#    Created: 2021/04/29 20:03:42 by kaye              #+#    #+#              #
+#    Updated: 2021/05/12 19:01:16 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# init
-openrc
-touch /run/openrc/softlevel
+if ! pidof php-fpm7 ; then
+	php-fpm7
+fi
 
-# start telegraf
-telegraf
-
-# to keep the Container running
-# tail -f /dev/null
-# sleep infinite
+if ! pidof telegraf ; then
+	telegraf &
+fi

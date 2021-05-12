@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/20 13:32:05 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 14:35:40 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 19:13:20 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,14 +17,10 @@ touch /run/openrc/softlevel
 # start telegraf
 telegraf &
 
-# run php server
-# php -S 0.0.0.0:5000 -t /var/www/phpmyadmin/phpmyadmin
-
-# run php
+# start php
 php-fpm7
 
-# run nginx
-# service nginx start
+# start nginx
 nginx -g 'daemon off;'
 
 # to keep the Container running

@@ -6,10 +6,14 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/09 14:42:02 by kaye              #+#    #+#              #
-#    Updated: 2021/05/09 14:42:30 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 19:17:23 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 if ! service mariadb status | grep "started" ; then
 	rc-service mariadb restart
+fi
+
+if ! pidof telegraf ; then
+	telegraf &
 fi

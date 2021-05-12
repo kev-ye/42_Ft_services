@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:08:35 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 14:35:48 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 18:53:50 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,16 +20,13 @@ sed -i "s/WP_PASSWORD/$WP_PASS/g" /var/www/wordpress/wordpress/wp-config.php
 # start telegraf
 telegraf &
 
-# run php server
-# php -S 0.0.0.0:5050 -t /var/www/wordpress/wordpress
-
-# run php
+# start php
 php-fpm7
 
-# run nginx
-# service nginx start
+# start nginx
 nginx -g 'daemon off;'
 
+#php
 # to keep the Container running
 # tail -f /dev/null
 # sleep infinite

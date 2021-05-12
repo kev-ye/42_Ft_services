@@ -27,6 +27,11 @@ spec:
         ports:
         - containerPort: 5050
           name: wordpress-http
+        livenessProbe:
+          exec:
+            command:
+              - sh
+              - /APP/srcs/livenessprobe.sh
 ---
 apiVersion: v1
 kind: Service
