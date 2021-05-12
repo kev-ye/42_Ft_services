@@ -5,26 +5,17 @@
 #                                                     +:+ +:+         +:+      #
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/04/16 19:09:09 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 12:52:58 by kaye             ###   ########.fr        #
+#    Created: 2021/05/11 10:46:28 by kaye              #+#    #+#              #
+#    Updated: 2021/05/12 12:53:16 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-# TIPS : to connect ssh : ssh (ID)@(ADDRESS IP) -p (PORT)
 
 # init
 openrc
 touch /run/openrc/softlevel
 
-# run sshd
-service sshd start
-
 # start telegraf
-telegraf &
-
-# run nginx
-# service nginx start
-nginx -g 'daemon off;'
+telegraf
 
 # to keep the Container running
 # tail -f /dev/null

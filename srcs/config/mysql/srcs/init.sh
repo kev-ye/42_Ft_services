@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:41 by kaye              #+#    #+#              #
-#    Updated: 2021/05/10 14:36:55 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 12:52:49 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,8 +41,8 @@ mysql -u root "wordpress" < /APP/srcs/wordpress.sql
 echo "show databases" | mysql -u root | grep 'wordpress'
 echo "show databases" | mysql -u root | grep 'admin'
 
-# config telegraf
-RUN mv /APP/srcs/telegraf.conf /etc/telegraf.conf.d/telegraf.conf
+# start telegraf
+telegraf &
 
 # to keep the Container running
 # tail -f /dev/null

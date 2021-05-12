@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:08:46 by kaye              #+#    #+#              #
-#    Updated: 2021/05/10 14:36:32 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 12:55:31 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ WORKDIR /APP
 
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk update \
-	&& apk add --no-cache wget openrc telegraf\
+	&& apk add --no-cache wget openrc telegraf \
 	&& apk add --no-cache php7 php-fpm php7-common php7-session php7-iconv php7-json \
 	php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi \
 	fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix \
@@ -27,14 +27,14 @@ RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 
 # install wordpress
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
-	&&mkdir -p /var/www/wordpress \
+	&& mkdir -p /var/www/wordpress \
 	&& wget https://wordpress.org/latest.tar.gz -P /var/www/wordpress/ \
 	&& tar -xzvf /var/www/wordpress/latest.tar.gz -C /var/www/wordpress/ \
 	&& rm /var/www/wordpress/latest.tar.gz \
 	&& mv /APP/srcs/wp-config.php /var/www/wordpress/wordpress/
 
-# config telegraf
-RUN mv /APP/srcs/telegraf.conf /etc/telegraf.conf.d/telegraf.conf
+# telegraf config
+ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 EXPOSE 5050
 

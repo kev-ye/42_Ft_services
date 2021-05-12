@@ -1,31 +1,31 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    init.sh                                            :+:      :+:    :+:    #
+#    dockerfile                                         :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/04/16 19:09:09 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 12:52:58 by kaye             ###   ########.fr        #
+#    Created: 2021/05/11 10:43:48 by kaye              #+#    #+#              #
+#    Updated: 2021/05/12 12:53:48 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-# TIPS : to connect ssh : ssh (ID)@(ADDRESS IP) -p (PORT)
+FROM alpine:latest
 
-# init
-openrc
-touch /run/openrc/softlevel
+COPY . /APP
+WORKDIR /APP
 
-# run sshd
-service sshd start
+# VOLUME /sys/fs/cgroup
 
-# start telegraf
-telegraf &
+RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
+	&& apk update \
+	&& apk add --no-cache telegraf openrc wget
 
-# run nginx
-# service nginx start
-nginx -g 'daemon off;'
+RUN mv /APP/srcs/telegraf.conf /etc/telegraf.conf.d
 
-# to keep the Container running
-# tail -f /dev/null
-# sleep infinite
+# telegraf config
+ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+
+EXPOSE 8125
+
+CMD ["/bin/sh", "./srcs/init.sh"]

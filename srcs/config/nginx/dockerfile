@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:27 by kaye              #+#    #+#              #
-#    Updated: 2021/05/10 14:36:04 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 12:55:08 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,6 @@ RUN adduser -D -g 'www' www
 RUN chown -R www:www /var/lib/nginx
 RUN chown -R www:www /www
 
-
 # Create ssl certificate
 RUN mkdir /etc/nginx/ssl
 RUN openssl req \
@@ -61,8 +60,8 @@ RUN openssl req \
 # Create the directory needed for nginx to run
 RUN mkdir /run/nginx/
 
-# config telegraf
-RUN mv /APP/srcs/telegraf.conf /etc/telegraf.conf.d/telegraf.conf
+# telegraf config
+ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 EXPOSE 80 443 22
 
