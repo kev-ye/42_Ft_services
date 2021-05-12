@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:09:03 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 12:55:16 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 14:35:03 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ WORKDIR /APP
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk update \
 	&& apk add --no-cache openrc wget telegraf \
-	&& apk add --no-cache php7 php7-common php7-session php7-iconv php7-json \
+	&& apk add --no-cache php7 php7-fpm php7-common php7-session php7-iconv php7-json \
 	php7-gd php7-curl php7-xml php7-mysqli php7-imap php7-cgi \
 	fcgi php7-pdo php7-pdo_mysql php7-soap php7-xmlrpc php7-posix \
 	php7-mcrypt php7-gettext php7-ldap php7-ctype php7-dom php7-mbstring
@@ -36,6 +36,7 @@ RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& mv /APP/srcs/config.inc.php /var/www/phpmyadmin/phpmyadmin/config.inc.php
 
 # telegraf config
+RUN mkidr /etc/telegraf/
 ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 EXPOSE 5000

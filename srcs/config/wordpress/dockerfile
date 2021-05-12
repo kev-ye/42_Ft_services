@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/16 19:08:46 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 12:55:31 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/12 14:32:21 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,6 +34,7 @@ RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& mv /APP/srcs/wp-config.php /var/www/wordpress/wordpress/
 
 # telegraf config
+RUN mkidr /etc/telegraf/
 ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 EXPOSE 5050
