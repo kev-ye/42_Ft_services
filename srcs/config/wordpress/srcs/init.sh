@@ -24,7 +24,7 @@ telegraf &
 # php -S 0.0.0.0:5050 -t /var/www/wordpress/wordpress
 
 # run php
-service php7-fpm start
+php-fpm7
 
 # run nginx
 # service nginx start
@@ -32,4 +32,4 @@ nginx -g 'daemon off;'
 
 # to keep the Container running
 # tail -f /dev/null
-sleep infinite
+# sleep infinite

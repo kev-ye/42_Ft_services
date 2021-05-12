@@ -22,7 +22,7 @@ RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk add --no-cache grafana openrc wget telegraf
 
 # telegraf config
-RUN mkidr /etc/telegraf/
+RUN mkdir /etc/telegraf/
 ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 EXPOSE 3000

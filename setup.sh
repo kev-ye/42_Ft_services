@@ -168,6 +168,11 @@ install_dashboard()
 ## INSTALLATION OF SERVICES
 setup_services()
 {
+	# use minikube docker, whitout this, minikube can't found images built locally
+	eval $(minikube docker-env)
+
+	sleep 5
+
 	echo ""
 	for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 'influxdb'
 	# for service in 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps'
@@ -223,6 +228,7 @@ ft_services()
 	# use minikube docker, whitout this, minikube can't found images built locally
 	eval $(minikube docker-env)
 
+	sleep 5
 
 	# check if metallb exist
 	kubectl get pods -n metallb-system 2>/dev/null 1>&2 | grep "controller" | grep "Running" 2>/dev/null 1>&2

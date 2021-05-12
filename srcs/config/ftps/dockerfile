@@ -38,7 +38,7 @@ RUN mv /etc/vsftpd/vsftpd.conf /etc/vsftpd/vsftpd.conf.duplicate \
 	&& cp ./srcs/vsftpd.conf /etc/vsftpd/
 
 # telegraf config
-RUN mkidr /etc/telegraf/
+RUN mkdir /etc/telegraf/
 ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
 
 EXPOSE 20 21 20000 20001 20002 20003 20004 20005
