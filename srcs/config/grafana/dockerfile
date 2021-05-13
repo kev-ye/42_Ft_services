@@ -19,7 +19,8 @@ WORKDIR /APP
 
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk update \
-	&& apk add --no-cache grafana openrc wget telegraf
+	&& apk add --no-cache grafana --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
+	&& apk add --no-cache openrc wget telegraf vim
 
 # telegraf config
 RUN mkdir /etc/telegraf/

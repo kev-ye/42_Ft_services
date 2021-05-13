@@ -50,14 +50,16 @@ install_minikube_linux()
 	cat /etc/group | grep "docker" | grep $(whoami) 2>/dev/null 1>&2
 	if [ $? -ne 0 ] ; then
 		# run docker without sudo
-		echo ""$RED"❗️Please do"$NONE" "$YELLOW"\"sudo usermod -aG docker $(whoami); newgrp docker\""$NONE""
+		echo ""$RED"❗️  Please do"$NONE" "$YELLOW"\"sudo usermod -aG docker $(whoami); newgrp docker\""$NONE""
 		exit
 	fi
 
 	# make sure docker is running
 	echo ""$GREEN"\n🐳 restart docker ..."$NONE""
-	service docker restart
-	sleep 5
+	if ! service docker restart 2>/dev/null ; then
+		echo ""$RED"\n🛠 Some error during docker lauch, please relauch the script ..."$NONE"\n"
+		exit
+	fi
 
 	# clean old minikube
 	echo ""$CYAN"\n♻️  clean old minikube if exist ..."$NONE""
@@ -143,6 +145,7 @@ install_dashboard()
 	if ! kubectl -n kube-system describe secret | grep admin-token 2>/dev/null 1>&2 ; then
 		echo ""$GREEN"\n🛠  create admin token ..."$NONE"\n\n"
 		kubectl create -f ./srcs/yaml/admin-token.yaml
+		sleep 5
 	fi
 
 	# show token
@@ -170,8 +173,6 @@ setup_services()
 {
 	# use minikube docker, whitout this, minikube can't found images built locally
 	eval $(minikube docker-env)
-
-	# sleep 5
 
 	echo ""
 	for service in 'influxdb' 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 
@@ -225,7 +226,6 @@ ft_services()
 
 	# use minikube docker, whitout this, minikube can't found images built locally
 	eval $(minikube docker-env)
-
 	sleep 5
 
 	# check if metallb exist
