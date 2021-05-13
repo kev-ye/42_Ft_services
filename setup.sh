@@ -178,7 +178,7 @@ setup_services()
 	for service in 'influxdb' 'nginx' 'mysql' 'phpmyadmin' 'wordpress' 'ftps' 'grafana' 
 	do
 		echo "🛠  Building $GREEN$service$NONE image ..."
-		docker build -t svc_$service ./srcs/config/$service 2>/dev/null 1>&2
+		docker build -t svc_$service ./srcs/config/$service
 		if [ $? -ne 0 ] ; then
 			echo ""$RED"Error during building image !$NONE"
 			exit
