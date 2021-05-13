@@ -50,14 +50,14 @@ install_minikube_linux()
 	cat /etc/group | grep "docker" | grep $(whoami) 2>/dev/null 1>&2
 	if [ $? -ne 0 ] ; then
 		# run docker without sudo
-		echo ""$RED"❗️  Please do"$NONE" "$YELLOW"\"sudo usermod -aG docker $(whoami); newgrp docker\""$NONE""
+		echo ""$RED"❗️ Please do"$NONE" "$YELLOW"\"sudo usermod -aG docker $(whoami); newgrp docker\""$NONE""
 		exit
 	fi
 
 	# make sure docker is running
 	echo ""$GREEN"\n🐳 restart docker ..."$NONE""
 	if ! service docker restart 2>/dev/null ; then
-		echo ""$RED"\n🛠 Some error during docker lauch, please relauch the script ..."$NONE"\n"
+		echo ""$RED"\n❗️ Some error during docker lauch, please relauch the script ..."$NONE"\n"
 		exit
 	fi
 
