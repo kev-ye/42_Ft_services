@@ -24,7 +24,7 @@ sed -i 's/skip-networking/# skip-networking/g' /etc/my.cnf.d/mariadb-server.cnf
 sed -i 's/#bind-address/bind-address/g' /etc/my.cnf.d/mariadb-server.cnf
 
 # start mariadb
-rc-service mariadb start
+service mariadb start
 
 sleep 5
 
@@ -42,6 +42,9 @@ mysql -u root "wordpress" < /APP/srcs/wordpress.sql
 # Check database and grants #
 echo "show databases" | mysql -u root | grep 'wordpress'
 echo "show databases" | mysql -u root | grep 'admin'
+
+# restart mariadb
+service mariadb restart
 
 # start telegraf
 telegraf &

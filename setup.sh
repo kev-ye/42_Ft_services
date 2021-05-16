@@ -143,7 +143,7 @@ install_dashboard()
 
 	# create admin token
 	if ! kubectl -n kube-system describe secret | grep admin-token 2>/dev/null 1>&2 ; then
-		echo ""$GREEN"\n🛠  create admin token ..."$NONE"\n\n"
+		echo ""$GREEN"\n🛠  create admin token ..."$NONE"\n"
 		kubectl create -f ./srcs/yaml/admin-token.yaml
 		sleep 5
 	fi
