@@ -6,7 +6,7 @@
 #    By: kaye <kaye@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/28 21:33:25 by kaye              #+#    #+#              #
-#    Updated: 2021/05/12 14:31:36 by kaye             ###   ########.fr        #
+#    Updated: 2021/05/16 14:16:49 by kaye             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,11 @@ WORKDIR /APP
 
 RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 	&& apk update \
-	&& apk add --no-cache grafana \
-	&& apk add --no-cache openrc wget telegraf vim
+	&& apk add --no-cache openrc wget telegraf vim \
+	&& wget https://dl.grafana.com/oss/release/grafana-6.7.2.linux-amd64.tar.gz \
+	&& tar -zxvf grafana-6.7.2.linux-amd64.tar.gz \
+	&& rm -rf grafana-6.7.2.linux-amd64.tar.gz
+	&& mv ./grafana-6.7.2 /etc/grafana
 
 # grafana config
 RUN mv ./srcs/datasources.yaml /usr/share/grafana/conf/provisioning/datasources \
@@ -36,6 +39,9 @@ RUN mv ./srcs/datasources.yaml /usr/share/grafana/conf/provisioning/datasources 
 # telegraf config
 RUN mkdir /etc/telegraf/
 ADD ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+
+# grafana config
+ADD ./srcs/grafana.db /etc/grafana/data/
 
 EXPOSE 3000
 
