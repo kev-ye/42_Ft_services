@@ -26,6 +26,8 @@ sed -i 's/#bind-address/bind-address/g' /etc/my.cnf.d/mariadb-server.cnf
 # start mariadb
 rc-service mariadb start
 
+sleep 5
+
 # Configure wordpress database & admin database
 echo "create database wordpress;" | mysql -u root
 echo "create user 'wordpress'@'%' IDENTIFIED BY '$WP_PASS';" | mysql -u root

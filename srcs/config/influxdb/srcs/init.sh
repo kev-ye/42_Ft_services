@@ -17,6 +17,8 @@ touch /run/openrc/softlevel
 # run influxdb
 rc-service influxdb start
 
+sleep 5
+
 # create database
 echo "create database telegraf" | influx
 
