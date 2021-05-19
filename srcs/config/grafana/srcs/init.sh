@@ -19,7 +19,3 @@ telegraf &
 
 # run grafana
 grafana-server --homepath=/usr/share/grafana
-
-# to keep the Container running
-# tail -f /dev/null
-# sleep infinite

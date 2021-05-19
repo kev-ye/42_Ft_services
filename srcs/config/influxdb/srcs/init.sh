@@ -15,7 +15,7 @@ openrc
 touch /run/openrc/softlevel
 
 # run influxdb
-rc-service influxdb start
+service influxdb start
 
 sleep 5
 
@@ -26,5 +26,4 @@ echo "create database telegraf" | influx
 telegraf &
 
 # to keep the Container running
-# tail -f /dev/null
-sleep infinite
+tail -f /dev/null

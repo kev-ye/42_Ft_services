@@ -25,8 +25,3 @@ php-fpm7
 
 # start nginx
 nginx -g 'daemon off;'
-
-#php
-# to keep the Container running
-# tail -f /dev/null
-# sleep infinite

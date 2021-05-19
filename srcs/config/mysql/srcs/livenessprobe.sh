@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 if ! service mariadb status | grep "started" ; then
-	rc-service mariadb restart
+	service mariadb restart
 fi
 
 if ! pidof telegraf ; then

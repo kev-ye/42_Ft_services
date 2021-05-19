@@ -19,7 +19,3 @@ telegraf &
 
 # start vsftpd
 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
-
-# to keep the Container running
-# tail -f /dev/null
-# sleep infinite

@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 if ! service influxdb status | grep "started" ; then
-	rc-service influxdb restart
+	service influxdb restart
 fi
 
 if ! pidof telegraf ; then

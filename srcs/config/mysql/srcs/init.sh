@@ -50,5 +50,4 @@ service mariadb restart
 telegraf &
 
 # to keep the Container running
-# tail -f /dev/null
-sleep infinite
+tail -f /dev/null
