@@ -39,7 +39,7 @@ COPY ./srcs/nginx.conf /etc/nginx/conf.d/default.conf
 
 # telegraf config
 RUN mkdir /etc/telegraf/
-COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+COPY ./srcs/telegraf.conf /etc/telegraf.conf
 
 EXPOSE 5000
 

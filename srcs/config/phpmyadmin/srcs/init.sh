@@ -15,7 +15,7 @@ openrc
 touch /run/openrc/softlevel
 
 # start telegraf
-telegraf &
+telegraf --config /etc/telegraf.conf &
 
 # start php
 php-fpm7

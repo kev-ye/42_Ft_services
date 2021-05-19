@@ -15,7 +15,7 @@ openrc
 touch /run/openrc/softlevel
 
 # start telegraf
-telegraf &
+telegraf --config /etc/telegraf.conf &
 
 # run grafana
 grafana-server --homepath=/usr/share/grafana

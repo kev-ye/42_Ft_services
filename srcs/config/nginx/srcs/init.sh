@@ -20,7 +20,7 @@ touch /run/openrc/softlevel
 service sshd start
 
 # start telegraf
-telegraf &
+telegraf --config /etc/telegraf.conf &
 
 # run nginx
 nginx -g 'daemon off;'

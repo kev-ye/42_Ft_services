@@ -13,7 +13,3 @@
 if ! service influxdb status | grep "started" ; then
 	service influxdb restart
 fi
-
-if ! pidof telegraf ; then
-	telegraf &
-fi

@@ -13,7 +13,3 @@
 if ! service mariadb status | grep "started" ; then
 	service mariadb restart
 fi
-
-if ! pidof telegraf ; then
-	telegraf &
-fi

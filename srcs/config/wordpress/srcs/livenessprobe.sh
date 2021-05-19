@@ -13,7 +13,3 @@
 if ! pidof php-fpm7 ; then
 	php-fpm7
 fi
-
-if ! pidof telegraf ; then
-	telegraf &
-fi

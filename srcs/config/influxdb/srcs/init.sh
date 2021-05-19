@@ -17,13 +17,10 @@ touch /run/openrc/softlevel
 # run influxdb
 service influxdb start
 
-sleep 5
+sleep 2
 
 # create database
 echo "create database telegraf" | influx
 
 # start telegraf
-telegraf &
-
-# to keep the Container running
-tail -f /dev/null
+telegraf --config /etc/telegraf.conf

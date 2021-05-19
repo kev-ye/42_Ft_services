@@ -18,7 +18,7 @@ touch /run/openrc/softlevel
 sed -i "s/WP_PASSWORD/$WP_PASS/g" /var/www/wordpress/wordpress/wp-config.php
 
 # start telegraf
-telegraf &
+telegraf --config /etc/telegraf.conf &
 
 # start php
 php-fpm7

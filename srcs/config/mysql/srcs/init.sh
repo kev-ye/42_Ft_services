@@ -26,7 +26,7 @@ sed -i 's/#bind-address/bind-address/g' /etc/my.cnf.d/mariadb-server.cnf
 # start mariadb
 service mariadb start
 
-sleep 5
+sleep 10
 
 # Configure wordpress database & admin database
 echo "create database wordpress;" | mysql -u root
@@ -39,15 +39,8 @@ echo "flush privileges" | mysql -u root
 
 mysql -u root "wordpress" < /APP/srcs/wordpress.sql
 
-# Check database and grants #
-echo "show databases" | mysql -u root | grep 'wordpress'
-echo "show databases" | mysql -u root | grep 'admin'
-
 # restart mariadb
 service mariadb restart
 
 # start telegraf
-telegraf &
-
-# to keep the Container running
-tail -f /dev/null
+telegraf --config /etc/telegraf.conf

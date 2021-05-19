@@ -15,7 +15,7 @@ openrc
 touch /run/openrc/softlevel
 
 # start telegraf
-telegraf &
+telegraf --config /etc/telegraf.conf &
 
 # start vsftpd
 /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf

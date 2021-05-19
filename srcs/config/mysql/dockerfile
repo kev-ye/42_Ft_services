@@ -22,7 +22,7 @@ RUN echo "nameserver 8.8.8.8" > /etc/resolv.conf \
 
 # telegraf config
 RUN mkdir /etc/telegraf/
-COPY ./srcs/telegraf.conf /etc/telegraf/telegraf.conf
+COPY ./srcs/telegraf.conf /etc/telegraf.conf
 
 EXPOSE 3306
 
